@@ -25,13 +25,18 @@ Meteor.startup(() => {
   if (Votes.find().count() !== candidates.length) {
     //make sure to start with clean db 
     Votes.remove({})
+
+    Votes.rawCollection().createIndex({userid: 1}, {unique: true})
+
     
-    candidates.map((candidate) => {
+    candidates.map((candidate, index) => {
+      console.log(`Inserting candidate: ${candidate.name}`)
       Votes.insert({
+        userid: index,
         name: candidate.name,
         position: candidate.position,
         votes: 0,
-        updatedAt: Date()
+        updatedAt: new Date().toString()
       })
     })
   }
@@ -54,13 +59,13 @@ Meteor.startup(() => {
     email = memberRow[2]
     password = passwords[i]
     
-    console.log(`[Member] ${lastName}, ${firstName} | email: ${email} , password: ${password}`)
+    console.log(`[Member] ${lastName}, ${firstName}`)
 
     try {
       if (!Accounts.findUserByEmail(email)) {
         console.log('Adding to accounts...')
         Accounts.createUser({ email, password })
-        console.log('Emailing...')
+        console.log(`Emailing: ${email} , password: ${password}`)
         Email.send({
           from: 'aecescomelec2020@gmail.com',
           to: email,

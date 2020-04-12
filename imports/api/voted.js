@@ -1,4 +1,5 @@
-import { Mongo } from 'meteor/mongo';
+import { Meteor } from 'meteor/meteor'
+import { Mongo } from 'meteor/mongo'
 
 export const Voted = new Mongo.Collection('voted');
 
@@ -10,8 +11,6 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   'voted.insert'(text) {
-    check(text, String);
- 
     if (!this.userId) {
       throw new Meteor.Error('not-authorized');
     }
