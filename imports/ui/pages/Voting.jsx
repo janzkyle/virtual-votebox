@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
-export const VotingPage = () => {
+const Voting = () => {
 
   return (
     <div>HOYBA</div>
   )
 }
+
+export default Voting

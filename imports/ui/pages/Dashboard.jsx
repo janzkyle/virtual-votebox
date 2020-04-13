@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
-export const LoginPage = () => {
+const Dashboard = () => {
 
   return (
     <div>HOY</div>
   )
 }
+
+export default Dashboard

@@ -27,7 +27,6 @@ Meteor.startup(() => {
     Votes.remove({})
 
     Votes.rawCollection().createIndex({userid: 1}, {unique: true})
-
     
     candidates.map((candidate, index) => {
       console.log(`Inserting candidate: ${candidate.name}`)
@@ -70,7 +69,7 @@ Meteor.startup(() => {
           from: 'aecescomelec2020@gmail.com',
           to: email,
           subject: 'AECES 2020 Online Elections',
-          text: `You may login and vote at ${process.env.ROOT_URL} using this email and the generated password below. \nYour auto generated password is: ${password} \n\nPlease do not reply to this email.`
+          text: `You may login and vote at ${process.env.ROOT_URL} using this email and the auto-generated password below. \nEmail: ${email} \nPassword: ${password} \n\nPlease do not reply to this email.`
         })
       }
     } catch (err) {
