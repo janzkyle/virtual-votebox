@@ -1,14 +1,48 @@
-import React, { useState } from 'react';
+import { Meteor } from 'meteor/meteor';
+
+import React, { useState, useEffect } from 'react';
 import { TextField, Button } from '@material-ui/core';
+import { useHistory, useLocation } from 'react-router';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleChange = (input) => {};
+  useEffect(() => {
+    if (Meteor.userId()) {
+      history.replace('/dashboard');
+    }
+  }, []);
+
+  let history = useHistory();
+  let location = useLocation();
+
+  let { from } = location.state || { from: { pathname: '/dashboard' } };
+  console.log(from);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    Meteor.loginWithPassword(email, password, (err) => {
+      if (err) {
+        let errMsg = '';
+        switch (err.error) {
+          case 400:
+            errMsg = 'Enter your email and password';
+            break;
+          case 403:
+            errMsg = err.reason;
+            break;
+        }
+        console.log(errMsg);
+        setPassword('');
+      } else {
+        history.replace(from);
+      }
+    });
+  };
 
   return (
-    <form autoComplete='off'>
+    <form autoComplete='off' onSubmit={handleSubmit}>
       <TextField
         label='Email'
         variant='outlined'

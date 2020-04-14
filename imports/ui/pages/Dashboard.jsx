@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const Dashboard = () => {
 
   return (
-    <div>HOY</div>
+    <h1>Dashboard</h1>
   )
 }
 

@@ -5,6 +5,7 @@ import { Router, Route, Switch, Redirect } from 'react-router';
 import { createBrowserHistory } from 'history';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
+import PrivateRoute from './components/PrivateRoute';
 import Nav from './components/Nav';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -18,18 +19,10 @@ export const App = () => {
       <CssBaseline />
       <Router history={browserHistory}>
         <Nav />
-        {Meteor.userId() ? (
-          <Switch>
-            <Route exact path='/dashboard' component={Dashboard} />
-            <Route exact path='/vote' component={Voting} />
-            <Redirect from='*' to='/dashboard' />
-          </Switch>
-        ) : (
-          <Switch>
-            <Route exact path='/login' component={Login} />
-            <Redirect from='*' to='/login' />
-          </Switch>
-        )}
+        <PrivateRoute exact path='/dashboard' component={Dashboard} />
+        <PrivateRoute exact path='/vote' component={Voting} />
+        <Route exact path='/login' component={Login} />
+        {/* <Redirect to={Meteor.userId() ? '/dashboard' : '/login'} /> */}
       </Router>
     </React.Fragment>
   );
