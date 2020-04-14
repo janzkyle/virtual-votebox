@@ -19,10 +19,12 @@ export const App = () => {
       <CssBaseline />
       <Router history={browserHistory}>
         <Nav />
-        <PrivateRoute exact path='/dashboard' component={Dashboard} />
-        <PrivateRoute exact path='/vote' component={Voting} />
-        <Route exact path='/login' component={Login} />
-        {/* <Redirect to={Meteor.userId() ? '/dashboard' : '/login'} /> */}
+        <Switch>
+          <PrivateRoute exact path='/dashboard' component={Dashboard} />
+          <PrivateRoute exact path='/vote' component={Voting} />
+          <Route exact path='/login' component={Login} />
+          <Redirect to={Meteor.userId() ? '/dashboard' : '/login'} />
+        </Switch>
       </Router>
     </React.Fragment>
   );

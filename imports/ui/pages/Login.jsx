@@ -19,7 +19,7 @@ const Login = () => {
   let location = useLocation();
 
   let { from } = location.state || { from: { pathname: '/dashboard' } };
-  console.log(from);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     Meteor.loginWithPassword(email, password, (err) => {
@@ -33,7 +33,7 @@ const Login = () => {
             errMsg = err.reason;
             break;
         }
-        console.log(errMsg);
+        setError(errMsg);
         setPassword('');
       } else {
         history.replace(from);
@@ -43,6 +43,7 @@ const Login = () => {
 
   return (
     <form autoComplete='off' onSubmit={handleSubmit}>
+      {error && <h2>{error}</h2>}
       <TextField
         label='Email'
         variant='outlined'
