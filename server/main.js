@@ -44,14 +44,10 @@ Meteor.startup(() => {
         name: candidate.name,
         position: candidate.position,
         votes: 0,
-        updatedAt: new Date().toString(),
+        updatedAt: new Date(),
       });
     });
   }
-
-  // setup smtp email server
-  process.env.MAIL_URL =
-    'smtp://aecescomelec2020@gmail.com:AECESvotes2020@smtp.gmail.com:587';
 
   const csv = Assets.getText('AECESCB1920Test.csv');
   const memberTable = Papa.parse(csv).data;

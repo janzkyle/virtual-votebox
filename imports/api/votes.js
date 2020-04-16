@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo'
 
+import { Voted }  from './voted'
+
 export const Votes = new Mongo.Collection('votes');
 
 if (Meteor.isServer) {
