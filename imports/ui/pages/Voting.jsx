@@ -1,42 +1,57 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState, useEffect } from 'react';
-import { useTracker } from 'meteor/react-meteor-data'
+import React, { useState } from 'react';
+import { useTracker } from 'meteor/react-meteor-data';
 
 import { Votes } from '../../api/votes';
+import { Positions } from '../../api/positions';
 
-const getCandidates = () => useTracker(() => {
-  Meteor.subscribe('votes');
-  const candidates = Votes.find({}, {fields: { name: 1, position: 1 }}).fetch();
-  return candidates
-}, []);
+const getCandidates = () =>
+  useTracker(() => {
+    const subscription = Meteor.subscribe('candidates');
+    const candidates = Votes.find().fetch();
+    return [candidates, subscription.ready()];
+  }, []);
 
-const groupBy = (xs, key) => {
-  return xs.reduce((rv, x) => {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
+const getPositions = () =>
+  useTracker(() => {
+    const subscription = Meteor.subscribe('positions');
+    const positions = Positions.find().fetch();
+    return [positions, subscription.ready()];
+  }, []);
+
+const groupCandidates = (obj, key) => {
+  return obj.reduce((acc, candidate) => {
+    (acc[candidate[key]] = acc[candidate[key]] || []).push(candidate);
+    return acc;
   }, {});
 };
 
+const insertCandidatesToPositions = (positions, grouped) => {
+  return positions.map((pos) => ({
+    ...pos,
+    candidates: grouped[pos.position],
+  }));
+};
+
 const Voting = () => {
-  const [hasVoted, sethasVoted] = useState(true)
-  const [ballot, setBallot] = useState([])
-  const [showModal, setShowModal] = useState(false)
+  const [hasVoted, sethasVoted] = useState(true);
+  const [ballot, setBallot] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
-  const candidates = getCandidates()
+  const [candidatesRaw, candidatesLoaded] = getCandidates();
+  const [positions, positionsLoaded] = getPositions();
 
-  const positions = Array.from(
-    new Set(candidates.map((candidate) => candidate.position))
-  );
-  
+  console.log(candidatesRaw);
+  console.log(candidatesLoaded);
+
+  console.log(positions);
+  console.log(positionsLoaded);
+
+  const grouped = groupCandidates(candidatesRaw, 'position');
+  const candidates = insertCandidatesToPositions(positions, grouped);
   console.log(candidates)
 
-  // positions = groupBy(candidates, 'position')
+  return <div>HOYBA</div>;
+};
 
-  console.log(positions)
-  
-  return (
-    <div>HOYBA</div>
-  )
-}
-
-export default Voting
+export default Voting;

@@ -6,8 +6,8 @@ import { Voted }  from './voted'
 export const Votes = new Mongo.Collection('votes');
 
 if (Meteor.isServer) {
-  Meteor.publish('votes',() => {
-    return Votes.find();
+  Meteor.publish('candidates',() => {
+    return Votes.find({}, {fields: { name: 1, position: 1 }});
   });
 }
 
@@ -21,9 +21,9 @@ Meteor.methods({
       throw new Meteor.Error('already-voted')
     } else {
       console.log(votes)
-      votes.map(id => {
-        id = parseInt(id)
-        Votes.update({ id }, { $inc: { votes: 1 } })
+      votes.map(_id => {
+        _id = parseInt(_id)
+        Votes.update({ _id }, { $inc: { votes: 1 } })
       })
     }
   }
