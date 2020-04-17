@@ -6,6 +6,7 @@ import { Papa } from 'meteor/harrison:papa-parse';
 import generator from 'generate-password';
 
 import { Votes } from '/imports/api/votes';
+import { Positions } from '/imports/api/positions';
 
 const candidates = [
   { position: 'President', name: 'Kyle Ordona1' },
@@ -18,6 +19,15 @@ const candidates = [
   { position: 'VP for RnD', name: 'Kyle Ordona8' },
   { position: 'VP for RnD', name: 'Kyle Ordona9' },
   { position: 'VP for RnD', name: 'Kyle Ordona10' },
+];
+
+const positions = [
+  { position: 'President', votesPerPerson: 1, withAbstain: true },
+  { position: 'External Vice President', votesPerPerson: 1, withAbstain: true },
+  { position: 'Finance Officer', votesPerPerson: 1, withAbstain: true },
+  { position: 'Secretary-General', votesPerPerson: 1, withAbstain: true },
+  { position: 'VP for RnD', votesPerPerson: 2, withAbstain: true },
+  { position: 'VP for EA', votesPerPerson: 2, withAbstain: true },
 ];
 
 const addAbstain = (candidates) => {
@@ -39,13 +49,23 @@ Meteor.startup(() => {
 
     candidates.map((candidate, index) => {
       console.log(`Inserting: ${candidate.name} as ${candidate.position}`);
-      Votes.insert({
-        userid: index,
-        name: candidate.name,
-        position: candidate.position,
-        votes: 0,
-        updatedAt: new Date(),
-      });
+      candidate.userid = index;
+      candidate.votes = 0;
+      candidate.updatedAt = new Date();
+      Votes.insert(candidate);
+    });
+  }
+
+  if (Positions.find().count() !== positions.length) {
+    //make sure to start with clean db
+    Positions.remove({});
+
+    Positions.rawCollection().createIndex({ id: 1 }, { unique: true });
+
+    positions.map((position, index) => {
+      console.log(`Inserting: ${position.position}`);
+      position.id = index;
+      Positions.insert(position);
     });
   }
 
