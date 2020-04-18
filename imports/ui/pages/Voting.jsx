@@ -5,18 +5,20 @@ import { useTracker } from 'meteor/react-meteor-data';
 import { Votes } from '../../api/votes';
 import { Positions } from '../../api/positions';
 
-const getCandidates = () =>
+import PositionComponent from '../components/PositionComponent';
+
+const useCandidates = () =>
   useTracker(() => {
     const subscription = Meteor.subscribe('candidates');
     const candidates = Votes.find().fetch();
-    return [candidates, subscription.ready()];
+    return { candidates, candidatesLoaded: subscription.ready() };
   }, []);
 
-const getPositions = () =>
+const usePositions = () =>
   useTracker(() => {
     const subscription = Meteor.subscribe('positions');
     const positions = Positions.find().fetch();
-    return [positions, subscription.ready()];
+    return { positions, positionsLoaded: subscription.ready() };
   }, []);
 
 const groupCandidates = (obj, key) => {
@@ -35,23 +37,28 @@ const insertCandidatesToPositions = (positions, grouped) => {
 
 const Voting = () => {
   const [hasVoted, sethasVoted] = useState(true);
-  const [ballot, setBallot] = useState([]);
+  const [votes, setVotes] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
-  const [candidatesRaw, candidatesLoaded] = getCandidates();
-  const [positions, positionsLoaded] = getPositions();
+  const { candidates, candidatesLoaded } = useCandidates();
+  const { positions, positionsLoaded } = usePositions();
+  const grouped = groupCandidates(candidates, 'position');
+  const ballot = insertCandidatesToPositions(positions, grouped);
+  console.log(ballot);
 
-  console.log(candidatesRaw);
-  console.log(candidatesLoaded);
+  const handleVoteChange = (position, candidateId) => {
 
-  console.log(positions);
-  console.log(positionsLoaded);
+  }
 
-  const grouped = groupCandidates(candidatesRaw, 'position');
-  const candidates = insertCandidatesToPositions(positions, grouped);
-  console.log(candidates)
-
-  return <div>HOYBA</div>;
+  return (
+    candidatesLoaded && positionsLoaded ? (
+      <>
+      {ballot.map(position => (<PositionComponent {...position} key={position._id} />))}
+      </>
+    ) : (
+      <div>Loading</div>
+    )
+  );
 };
 
 export default Voting;

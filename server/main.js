@@ -19,6 +19,7 @@ const candidates = [
   { position: 'VP for RnD', name: 'Kyle Ordona8' },
   { position: 'VP for RnD', name: 'Kyle Ordona9' },
   { position: 'VP for RnD', name: 'Kyle Ordona10' },
+  { position: 'VP for EA', name: 'Kyle Ordona11' },
 ];
 
 const positions = [
