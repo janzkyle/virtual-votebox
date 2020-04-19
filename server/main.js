@@ -16,10 +16,11 @@ const candidates = [
   { position: 'Finance Officer', name: 'Kyle Ordona5' },
   { position: 'Secretary-General', name: 'Kyle Ordona6' },
   { position: 'Secretary-General', name: 'Kyle Ordona7' },
-  { position: 'VP for RnD', name: 'Kyle Ordona8' },
+  { position: 'Secretary-General', name: 'Kyle Ordona8' },
   { position: 'VP for RnD', name: 'Kyle Ordona9' },
   { position: 'VP for RnD', name: 'Kyle Ordona10' },
-  { position: 'VP for EA', name: 'Kyle Ordona11' },
+  { position: 'VP for RnD', name: 'Kyle Ordona11' },
+  { position: 'VP for EA', name: 'Kyle Ordona12' },
 ];
 
 const positions = [
@@ -31,26 +32,24 @@ const positions = [
   { position: 'VP for EA', votesPerPerson: 2, withAbstain: true },
 ];
 
-const addAbstain = (candidates) => {
-  const positions = Array.from(
-    new Set(candidates.map((candidate) => candidate.position))
+const addAbstain = (positions, candidates) => {
+  positions.map((position) =>
+    candidates.push({ position: position.position, name: 'Abstain' })
   );
-  positions.map((position) => candidates.push({ position, name: 'Abstain' }));
 };
 
 Meteor.startup(() => {
-  addAbstain(candidates);
+  addAbstain(positions, candidates);
 
   // insert candidates to votes collection
   if (Votes.find().count() !== candidates.length) {
     //make sure to start with clean db
     Votes.remove({});
 
-    Votes.rawCollection().createIndex({ userid: 1 }, { unique: true });
+    // Votes.rawCollection().createIndex({ userid: 1 }, { unique: true });
 
-    candidates.map((candidate, index) => {
+    candidates.map((candidate) => {
       console.log(`Inserting: ${candidate.name} as ${candidate.position}`);
-      candidate.userid = index;
       candidate.votes = 0;
       candidate.updatedAt = new Date();
       Votes.insert(candidate);
@@ -61,11 +60,10 @@ Meteor.startup(() => {
     //make sure to start with clean db
     Positions.remove({});
 
-    Positions.rawCollection().createIndex({ id: 1 }, { unique: true });
+    // Positions.rawCollection().createIndex({ id: 1 }, { unique: true });
 
-    positions.map((position, index) => {
+    positions.map((position) => {
       console.log(`Inserting: ${position.position}`);
-      position.id = index;
       Positions.insert(position);
     });
   }
