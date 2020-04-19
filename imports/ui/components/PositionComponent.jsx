@@ -1,7 +1,8 @@
 import React from 'react';
 import CandidatesForm from './CandidatesForm';
+import { FormControl, FormLabel } from '@material-ui/core';
 
-const PositionComponent = ({ position, votesPerPerson, candidates }) => {
+const PositionComponent = ({ _id, position, votesPerPerson, candidates }) => {
   const titles = [position];
 
   if (votesPerPerson > 1) {
@@ -11,11 +12,13 @@ const PositionComponent = ({ position, votesPerPerson, candidates }) => {
     }
   }
 
-  console.log(titles);
   return (
     <>
-      {titles.map((title) => (
-        <CandidatesForm position={title} candidates={candidates} key={title} />
+      {titles.map((title, i) => (
+        <FormControl component="fieldset">
+          <FormLabel component="legend">{title}</FormLabel>
+          <CandidatesForm candidates={candidates} key={i.toString()} />
+        </FormControl>
       ))}
     </>
   );
