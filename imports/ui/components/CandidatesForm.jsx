@@ -1,14 +1,25 @@
-import React from 'react'
+import React from 'react';
 import { Radio, RadioGroup, FormControlLabel } from '@material-ui/core';
 
-const CandidatesForm = ({ candidates }) => {
+const CandidatesForm = (props) => {
+  const { candidates, selected, handleSelected, index } = props;
+
+  const onChange = (event) => {
+    handleSelected(index, event.target.value);
+  };
+
   return (
-    <RadioGroup>
-      {candidates.map(candidate => (
-        <FormControlLabel value={candidate._id} control={<Radio />} label={candidate.name} key={candidate._id} />
+    <RadioGroup value={selected} onChange={onChange}>
+      {candidates.map((candidate) => (
+        <FormControlLabel
+          control={<Radio />}
+          label={candidate.name}
+          value={candidate._id}
+          key={candidate._id}
+        />
       ))}
     </RadioGroup>
-  )
-}
+  );
+};
 
-export default CandidatesForm
+export default CandidatesForm;

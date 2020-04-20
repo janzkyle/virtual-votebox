@@ -37,27 +37,34 @@ const insertCandidatesToPositions = (positions, grouped) => {
 
 const Voting = () => {
   const [hasVoted, sethasVoted] = useState(true);
-  const [votes, setVotes] = useState([]);
+  const [votes, setVotes] = useState({});
   const [showModal, setShowModal] = useState(false);
 
   const { candidates, candidatesLoaded } = useCandidates();
   const { positions, positionsLoaded } = usePositions();
   const grouped = groupCandidates(candidates, 'position');
   const ballot = insertCandidatesToPositions(positions, grouped);
-  console.log(ballot);
+  // console.log(ballot);
 
-  const handleVoteChange = (position, candidateId) => {
+  const handleVoteChange = (position, value) => {
+    let tempVotes = {...votes};
+    tempVotes[position] = value;
+    setVotes(tempVotes);
+  };
+  console.log(votes);
 
-  }
-
-  return (
-    candidatesLoaded && positionsLoaded ? (
-      <>
-      {ballot.map(position => (<PositionComponent {...position} key={position._id} />))}
-      </>
-    ) : (
-      <div>Loading</div>
-    )
+  return candidatesLoaded && positionsLoaded ? (
+    <>
+      {ballot.map((position) => (
+        <PositionComponent
+          handleVoteChange={handleVoteChange}
+          key={position._id}
+          {...position}
+        />
+      ))}
+    </>
+  ) : (
+    <div>Loading</div>
   );
 };
 
