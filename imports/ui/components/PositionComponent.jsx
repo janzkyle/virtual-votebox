@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import CandidatesForm from './CandidatesForm';
 import { FormControl, FormLabel } from '@material-ui/core';
 
@@ -14,7 +14,7 @@ const PositionComponent = (props) => {
   const [voted, setVoted] = useState([]);
   
   const titles = [position];
-  if (votesPerPerson > 1) {
+  if (votesPerPerson > 1 && candidates.length - withAbstain > 1) {
     titles.pop();
     for (let i = 1; i <= votesPerPerson; i++) {
       titles.push(`${position}-${i}`);
@@ -33,14 +33,20 @@ const PositionComponent = (props) => {
     }
   };
 
+  const isInitialMount = useRef(true);
   useEffect(() => {
-    handleVoteChange(position, voted);
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      handleVoteChange(position, voted);
+    }
   }, [voted])
 
   return (
-    <>
+    <div>
+      {titles.length > 1 && <div>You can only vote a candidate once except Abstain</div>}
       {titles.map((title, i) => (
-        <FormControl component='fieldset' key={i.toString()}>
+        <FormControl component='fieldset' fullWidth={true} required={true} key={i.toString()}>
           <FormLabel component='legend'>{title}</FormLabel>
           <CandidatesForm
             candidates={candidates}
@@ -50,7 +56,7 @@ const PositionComponent = (props) => {
           />
         </FormControl>
       ))}
-    </>
+    </div>
   );
 };
 
