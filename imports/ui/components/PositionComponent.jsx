@@ -10,9 +10,9 @@ const PositionComponent = (props) => {
     withAbstain,
     handleVoteChange,
   } = props;
-  
+
   const [voted, setVoted] = useState([]);
-  
+
   const titles = [position];
   if (votesPerPerson > 1 && candidates.length - withAbstain > 1) {
     titles.pop();
@@ -40,13 +40,20 @@ const PositionComponent = (props) => {
     } else {
       handleVoteChange(position, voted);
     }
-  }, [voted])
+  }, [voted]);
 
   return (
     <div>
-      {titles.length > 1 && <div>You can only vote a candidate once except Abstain</div>}
+      {titles.length > 1 && (
+        <div>You can only vote a candidate once except Abstain</div>
+      )}
       {titles.map((title, i) => (
-        <FormControl component='fieldset' fullWidth={true} required={true} key={i.toString()}>
+        <FormControl
+          component='fieldset'
+          fullWidth={true}
+          required={true}
+          key={i.toString()}
+        >
           <FormLabel component='legend'>{title}</FormLabel>
           <CandidatesForm
             candidates={candidates}

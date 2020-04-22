@@ -17,10 +17,14 @@ Meteor.methods({
       throw new Meteor.Error('not-authorized');
     }
 
-    if (Voted.findOne({ user_id: Meteor.userId() })) {
-      throw new Meteor.Error('already-voted');
+    if (Voted.findOne({ userId: Meteor.userId() })) {
+      throw new Meteor.Error('already-voted', 'Already voted. You cannot vote more than once');
     } else {
       console.log(votes);
+      Voted.insert({
+        votedAt: new Date(),
+        userId: this.userId,
+      });
       votes.map((_id) => {
         Votes.update({ _id }, { $inc: { votes: 1 } });
       });

@@ -13,9 +13,9 @@ import PositionComponent from '../components/PositionComponent';
 
 const useVoted = () =>
   useTracker(() => {
-    const subscription = Meteor.subscribe('voted');
+    Meteor.subscribe('voted');
     const voted = Voted.find().fetch();
-    return { hasVoted: !!voted.length, votedLoaded: subscription.ready() };
+    return !!voted.length;
   }, []);
 
 const useCandidates = () =>
@@ -51,21 +51,27 @@ const Voting = () => {
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
 
-  const { hasVoted, votedLoaded } = useVoted();
+  const hasVoted = useVoted();
   const { candidates, candidatesLoaded } = useCandidates();
   const { positions, positionsLoaded } = usePositions();
+
   const grouped = groupCandidates(candidates, 'position');
   const ballot = insertCandidatesToPositions(positions, grouped);
 
   const handleVoteChange = (position, value) => {
     let tempVotes = { ...votes };
-    tempVotes[position] = value;
+    tempVotes[position] = value.filter(Boolean);
     setVotes(tempVotes);
   };
 
   const handleVoteSubmit = (e) => {
     e.preventDefault();
-    let hasError = false;
+
+    if (hasVoted) {
+      setError('Already voted. You cannot vote more than once');
+      return;
+    }
+
     for (const position of positions) {
       const voteIds = votes[position.position];
       const requiredVotes = Math.min(
@@ -73,19 +79,15 @@ const Voting = () => {
         grouped[position.position].length - position.withAbstain
       );
       if (voteIds === undefined || requiredVotes !== voteIds.length) {
-        hasError = true;
         setError(`Vote for ${position.position} is required`);
-        break;
+        return;
       }
     }
 
-    if (!hasError) {
-      setError('');
-      Meteor.call('votes.update', Object.values(votes).flat(1), (err) => {
-        console.log(err);
-      });
-      console.log(Object.values(votes).flat(1));
-    }
+    setError('');
+    Meteor.call('votes.update', Object.values(votes).flat(1), (err) => {
+      setError(err.reason);
+    });
   };
 
   useEffect(() => {
@@ -109,6 +111,7 @@ const Voting = () => {
           color='primary'
           fullWidth
           disableElevation
+          disabled={hasVoted}
         >
           Submit Votes
         </Button>
