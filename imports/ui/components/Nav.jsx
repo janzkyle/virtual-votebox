@@ -18,7 +18,7 @@ const Nav = () => {
   }
 
   return (
-    <Container>
+    <>
       <h2>AECES Online Elections</h2>
       {Meteor.userId() ?
         <Button
@@ -33,7 +33,7 @@ const Nav = () => {
         </Button>
         : ''
       }
-    </Container>
+    </>
   )
 }
 
