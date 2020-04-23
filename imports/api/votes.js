@@ -9,6 +9,10 @@ if (Meteor.isServer) {
   Meteor.publish('candidates', () => {
     return Votes.find({}, { fields: { name: 1, position: 1 } });
   });
+
+  Meteor.publish('tallies', () => {
+    return Votes.find({}, { fields: { updatedAt: 0 } });
+  });
 }
 
 Meteor.methods({
