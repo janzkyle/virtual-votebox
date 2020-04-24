@@ -1,8 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 
 import React, { useState, useEffect } from 'react';
-import { makeStyles, CssBaseline, Grid, Paper, TextField, Button } from '@material-ui/core';
+import {
+  makeStyles,
+  CssBaseline,
+  Grid,
+  Hidden,
+  TextField,
+  Typography,
+  Button,
+  Box,
+} from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,19 +22,28 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: 'url(https://source.unsplash.com/random)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+      theme.palette.type === 'light'
+        ? theme.palette.grey[50]
+        : theme.palette.grey[900],
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
+  img: {
+    maxWidth: '100%',
+    padding: theme.spacing(0, 4)
+  },
   paper: {
-    margin: theme.spacing(8, 4),
+    padding: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    justifyContent: 'center',
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
+  },
+  login: {
+    flexGrow: 2
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -77,13 +96,31 @@ const Login = () => {
   return (
     <Grid container component='main' className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <form
-            className={classes.form}
-            onSubmit={handleSubmit}
-          >
+      <Hidden xsDown>
+        <Grid item sm={7} className={classes.image} />
+      </Hidden>
+      <Grid item container xs={12} sm={5} className={classes.paper}>
+        <Grid item>
+          <Hidden smUp>
+            <div>
+              <img src='/logo.png' className={classes.img} />
+            </div>
+            <Typography component='h1' variant='h4'>
+              <Box textAlign='center' m={1}>
+                Votebox
+              </Box>
+            </Typography>
+          </Hidden>
+        </Grid>
+        <Grid item className={classes.login}>
+          <Hidden xsDown>
+            <Typography component='h1' variant='h5'>
+              <Box textAlign='center' m={1}>
+                Sign in
+              </Box>
+            </Typography>
+          </Hidden>
+          <form className={classes.form} onSubmit={handleSubmit}>
             {error && <h2>{error}</h2>}
             <TextField
               label='Email'
@@ -115,7 +152,14 @@ const Login = () => {
               Login
             </Button>
           </form>
-        </div>
+          <Grid container>
+            <Grid item xs>
+              <Typography variant="body2">
+                Check your mailbox for sign-in credentials
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
