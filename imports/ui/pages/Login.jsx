@@ -10,6 +10,7 @@ import {
   Typography,
   Button,
   Box,
+  Fab
 } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router';
 
@@ -30,27 +31,36 @@ const useStyles = makeStyles((theme) => ({
   },
   img: {
     maxWidth: '100%',
-    padding: theme.spacing(0, 4)
+    padding: theme.spacing(0, 15, 1)
   },
   paper: {
-    padding: theme.spacing(8, 4),
+    padding: theme.spacing(12, 4),
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    alignItems: 'center'
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   login: {
-    flexGrow: 2
+    padding: theme.spacing(1, 0),
   },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  textField: {
+    [`& fieldset`]: {
+      borderRadius: 25,
+    },
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(5, 0, 2),
+    padding: theme.spacing(0, 5)
   },
 }));
 
@@ -105,9 +115,9 @@ const Login = () => {
             <div>
               <img src='/logo.png' className={classes.img} />
             </div>
-            <Typography component='h1' variant='h4'>
+            <Typography component='h1' variant='h5'>
               <Box textAlign='center' m={1}>
-                Votebox
+                Virtual Votebox
               </Box>
             </Typography>
           </Hidden>
@@ -131,6 +141,7 @@ const Login = () => {
               required
               fullWidth
               autoFocus
+              className={classes.textField}
             />
             <TextField
               label='Password'
@@ -141,16 +152,16 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               fullWidth
+              className={classes.textField}
             />
-            <Button
+            <Fab
               type='submit'
-              variant='contained'
               color='primary'
-              fullWidth
               className={classes.submit}
+              variant='extended'
             >
               Login
-            </Button>
+            </Fab>
           </form>
           <Grid container>
             <Grid item xs>
