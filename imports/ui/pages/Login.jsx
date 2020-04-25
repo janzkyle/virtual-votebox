@@ -39,10 +39,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center'
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
   login: {
     padding: theme.spacing(1, 0),
   },
@@ -61,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(5, 0, 2),
     padding: theme.spacing(0, 5)
-  },
+  }
 }));
 
 const Login = () => {
@@ -165,7 +161,7 @@ const Login = () => {
           </form>
           <Grid container>
             <Grid item xs>
-              <Typography variant="body2">
+              <Typography variant="subtitle2">
                 Check your mailbox for sign-in credentials
               </Typography>
             </Grid>

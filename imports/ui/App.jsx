@@ -3,7 +3,8 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { makeStyles, Container, CssBaseline} from '@material-ui/core';
+import { makeStyles, CssBaseline} from '@material-ui/core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import PrivateRoute from './components/PrivateRoute';
 import Nav from './components/Nav';
@@ -11,18 +12,23 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Voting from './pages/Voting';
 
-const useStyles = makeStyles({
-  root: {
-    height: '100vh'
-  }
-})
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#0091EA'
+    },
+    secondary: {
+      main: '#273236'
+    },
+  },
+});
 
 const browserHistory = createBrowserHistory();
 
 export const App = () => {
-  const classes = useStyles();
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router history={browserHistory}>
         {/* <Nav /> */}
@@ -33,7 +39,7 @@ export const App = () => {
           <Redirect to={Meteor.userId() ? '/dashboard' : '/login'} />
         </Switch>
       </Router>
-    </>
+    </ThemeProvider>
     // </Container>
   );
 };
