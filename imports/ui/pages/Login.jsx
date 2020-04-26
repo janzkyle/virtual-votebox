@@ -10,10 +10,9 @@ import {
   Typography,
   Button,
   Box,
-  Fab
+  Fab,
 } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,25 +28,36 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
-  img: {
-    maxWidth: '100%',
-    padding: theme.spacing(0, 15, 1)
-  },
-  paper: {
-    padding: theme.spacing(12, 4),
+  titleContainer: {
+    backgroundColor: theme.palette.secondary.light,
+    padding: theme.spacing(10, 4, 0),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+  },
+  logoAndTitle: {
+    padding: theme.spacing(10, 4, 0),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  img: {
+    maxHeight: 100,
+    margin: theme.spacing(5, 15, 0),
+  },
+  paper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   login: {
     padding: theme.spacing(1, 0),
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   textField: {
     [`& fieldset`]: {
@@ -56,8 +66,8 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(5, 0, 2),
-    padding: theme.spacing(0, 5)
-  }
+    padding: theme.spacing(0, 5),
+  },
 }));
 
 const Login = () => {
@@ -99,24 +109,31 @@ const Login = () => {
     });
   };
 
+  const logoAndTitle = (
+    <>
+      <div>
+        <img src='/logo.png' className={classes.img} />
+      </div>
+      <Typography component='h1' variant='h3'>
+        <Box textAlign='center' m={1}>
+          Virtual Votebox
+        </Box>
+      </Typography>
+    </>
+  );
+
   return (
     <Grid container component='main' className={classes.root}>
       <CssBaseline />
       <Hidden xsDown>
-        <Grid item sm={7} className={classes.image} />
+        <Grid item sm={7} className={classes.titleContainer}>
+          {logoAndTitle}
+          <Typography>Secure Online Voting for Organizations</Typography>
+        </Grid>
       </Hidden>
       <Grid item container xs={12} sm={5} className={classes.paper}>
-        <Grid item>
-          <Hidden smUp>
-            <div>
-              <img src='/logo.png' className={classes.img} />
-            </div>
-            <Typography component='h1' variant='h5'>
-              <Box textAlign='center' m={1}>
-                Virtual Votebox
-              </Box>
-            </Typography>
-          </Hidden>
+        <Grid item className={classes.logoAndTitle}>
+          <Hidden smUp>{logoAndTitle}</Hidden>
         </Grid>
         <Grid item className={classes.login}>
           <Hidden xsDown>
@@ -161,7 +178,7 @@ const Login = () => {
           </form>
           <Grid container>
             <Grid item xs>
-              <Typography variant="subtitle2">
+              <Typography variant='subtitle2'>
                 Check your mailbox for sign-in credentials
               </Typography>
             </Grid>

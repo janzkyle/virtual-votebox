@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { makeStyles, CssBaseline} from '@material-ui/core';
+import { CssBaseline } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import PrivateRoute from './components/PrivateRoute';
@@ -12,14 +12,14 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Voting from './pages/Voting';
 
-
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#0091EA'
+      main: '#273236',
     },
     secondary: {
-      main: '#273236'
+      main: '#0091EA',
+      light: '#e8eaf6',
     },
   },
 });
@@ -40,6 +40,5 @@ export const App = () => {
         </Switch>
       </Router>
     </ThemeProvider>
-    // </Container>
   );
 };
