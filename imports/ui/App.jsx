@@ -13,6 +13,17 @@ import Dashboard from './pages/Dashboard';
 import Voting from './pages/Voting';
 
 const theme = createMuiTheme({
+  typography: {
+    fontFamily: [
+      'Montserrat',
+      'Roboto',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+  ].join(',')
+  },
   palette: {
     primary: {
       main: '#273236',

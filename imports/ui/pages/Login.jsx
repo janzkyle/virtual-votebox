@@ -3,12 +3,10 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import {
   makeStyles,
-  CssBaseline,
   Grid,
   Hidden,
   TextField,
   Typography,
-  Button,
   Box,
   Fab,
 } from '@material-ui/core';
@@ -18,46 +16,36 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
   },
-  image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
-    backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      theme.palette.type === 'light'
-        ? theme.palette.grey[50]
-        : theme.palette.grey[900],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
   titleContainer: {
-    backgroundColor: theme.palette.secondary.light,
+    backgroundColor: theme.palette.primary.main,
     padding: theme.spacing(10, 4, 0),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   logoAndTitle: {
-    padding: theme.spacing(10, 4, 0),
+    padding: theme.spacing(0),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  description: {
+    color: theme.palette.secondary.main,
   },
   img: {
     maxHeight: 100,
     margin: theme.spacing(5, 15, 0),
   },
   paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    padding: theme.spacing(7, 2, 0),
   },
   login: {
-    padding: theme.spacing(1, 0),
+    padding: theme.spacing(1, 4),
+    flexDirection: 'column',
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
   },
   textField: {
     [`& fieldset`]: {
@@ -66,7 +54,8 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(5, 0, 2),
-    padding: theme.spacing(0, 5),
+    padding: theme.spacing(0, 7),
+    alignSelf: 'center',
   },
 }));
 
@@ -109,13 +98,13 @@ const Login = () => {
     });
   };
 
-  const logoAndTitle = (
+  const logoAndTitle = (isMobile = false) => (
     <>
       <div>
         <img src='/logo.png' className={classes.img} />
       </div>
-      <Typography component='h1' variant='h3'>
-        <Box textAlign='center' m={1}>
+      <Typography component='h1' variant='h4'>
+        <Box textAlign='center' m={1} color={isMobile ? '' : 'white'}>
           Virtual Votebox
         </Box>
       </Typography>
@@ -124,30 +113,31 @@ const Login = () => {
 
   return (
     <Grid container component='main' className={classes.root}>
-      <CssBaseline />
       <Hidden xsDown>
         <Grid item sm={7} className={classes.titleContainer}>
-          {logoAndTitle}
-          <Typography>Secure Online Voting for Organizations</Typography>
+          {logoAndTitle()}
+          <Typography className={classes.description}>
+            Secure Online Voting for Organizations
+          </Typography>
         </Grid>
       </Hidden>
-      <Grid item container xs={12} sm={5} className={classes.paper}>
+      <Grid item xs={12} sm={5} className={classes.paper}>
         <Grid item className={classes.logoAndTitle}>
-          <Hidden smUp>{logoAndTitle}</Hidden>
+          <Hidden smUp>{logoAndTitle((isMobile = true))}</Hidden>
         </Grid>
         <Grid item className={classes.login}>
           <Hidden xsDown>
-            <Typography component='h1' variant='h5'>
+            <Typography component='h2' variant='h4'>
               <Box textAlign='center' m={1}>
                 Sign in
               </Box>
             </Typography>
           </Hidden>
           <form className={classes.form} onSubmit={handleSubmit}>
-            {error && <h2>{error}</h2>}
+            {error && <Typography color='error'>{error}</Typography>}
             <TextField
               label='Email'
-              variant='outlined'
+              type='email'
               margin='normal'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -155,17 +145,18 @@ const Login = () => {
               fullWidth
               autoFocus
               className={classes.textField}
+              variant='outlined'
             />
             <TextField
               label='Password'
               type='password'
-              variant='outlined'
               margin='normal'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               fullWidth
               className={classes.textField}
+              variant='outlined'
             />
             <Fab
               type='submit'
@@ -176,13 +167,9 @@ const Login = () => {
               Login
             </Fab>
           </form>
-          <Grid container>
-            <Grid item xs>
-              <Typography variant='subtitle2'>
-                Check your mailbox for sign-in credentials
-              </Typography>
-            </Grid>
-          </Grid>
+          <Typography variant='subtitle2' align='center'>
+            Check your mailbox for sign-in credentials
+          </Typography>
         </Grid>
       </Grid>
     </Grid>
