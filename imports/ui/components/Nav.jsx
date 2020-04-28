@@ -31,7 +31,6 @@ const Nav = () => {
     e.preventDefault();
     Meteor.logout((err) => {
       if (!err) {
-        console.log('time ka na boi extend ka na');
         history.push('/login');
       }
     });

@@ -45,7 +45,7 @@ export const App = () => {
           <PrivateRoute exact path='/dashboard' component={Dashboard} />
           <PrivateRoute exact path='/vote' component={Voting} />
           <Route exact path='/login' component={Login} />
-          <Redirect to={Meteor.userId() ? '/dashboard' : '/login'} />
+          <Redirect to={Meteor.userId() ? '/vote' : '/login'} />
         </Switch>
       </Router>
     </ThemeProvider>

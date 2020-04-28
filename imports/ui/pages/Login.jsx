@@ -68,7 +68,7 @@ const Login = () => {
 
   useEffect(() => {
     if (Meteor.userId()) {
-      history.replace('/dashboard');
+      history.replace('/vote');
     }
   }, []);
 
