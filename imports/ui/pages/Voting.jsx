@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 
-import { Button } from '@material-ui/core';
+import { makeStyles, CircularProgress, Grid, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
 import { Voted } from '../../api/voted';
@@ -10,6 +10,18 @@ import { Votes } from '../../api/votes';
 import { Positions } from '../../api/positions';
 
 import PositionComponent from '../components/PositionComponent';
+import { groupCandidates, insertCandidatesToPositions } from '../../util/helper';
+
+
+const useStyles = makeStyles((theme) => ({
+  loader: {
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    WebkitTransform: 'translate(-50%, -50%)',
+    transform: 'translate(-50%, -50%)'
+  },
+}));
 
 const useVoted = () =>
   useTracker(() => {
@@ -32,21 +44,10 @@ const usePositions = () =>
     return { positions, positionsLoaded: subscription.ready() };
   }, []);
 
-const groupCandidates = (obj, key) => {
-  return obj.reduce((acc, candidate) => {
-    (acc[candidate[key]] = acc[candidate[key]] || []).push(candidate);
-    return acc;
-  }, {});
-};
-
-const insertCandidatesToPositions = (positions, grouped) => {
-  return positions.map((pos) => ({
-    ...pos,
-    candidates: grouped[pos.position],
-  }));
-};
 
 const Voting = () => {
+  const classes = useStyles()
+  
   const [votes, setVotes] = useState({});
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -95,7 +96,7 @@ const Voting = () => {
   }, [error]);
 
   return candidatesLoaded && positionsLoaded ? (
-    <>
+    <Grid container>
       {error && <Alert severity='error'>{error}</Alert>}
       <form onSubmit={handleVoteSubmit}>
         {ballot.map((position) => (
@@ -116,9 +117,9 @@ const Voting = () => {
           Submit Votes
         </Button>
       </form>
-    </>
+    </Grid>
   ) : (
-    <div>Loading</div>
+    <div className={classes.loader}><CircularProgress /></div>
   );
 };
 

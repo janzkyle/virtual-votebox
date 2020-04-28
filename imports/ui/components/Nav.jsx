@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Grid, Button } from '@material-ui/core';
+import { makeStyles, Grid, useMediaQuery, Button } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useHistory } from 'react-router';
 
@@ -7,24 +7,26 @@ const useStyles = makeStyles((theme) => ({
   nav: {
     padding: theme.spacing(1, 2),
     backgroundColor: theme.palette.primary.main,
-    color: 'white'
+    color: 'white',
   },
   title: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   logout: {
     display: 'flex',
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   logoutIcon: {
-    cursor: 'pointer'
-  }
+    cursor: 'pointer',
+  },
 }));
 
 const Nav = () => {
   const classes = useStyles();
+  const matches = useMediaQuery((theme) => theme.breakpoints.up('sm'));
+
   let history = useHistory();
 
   const handleLogout = (e) => {
@@ -43,19 +45,22 @@ const Nav = () => {
           <h2>Virtual Votebox</h2>
         </Grid>
         <Grid item xs={4} className={classes.logout}>
-          <ExitToAppIcon
-            type='submit'
-            className={classes.logoutIcon}
-            onClick={handleLogout}
-          />
-          {/* <Button
-            variant='outlined'
-            type='submit'
-            color='secondary'
-            onClick={handleLogout}
-          >
-            LOGOUT
-          </Button> */}
+          {matches ? (
+            <Button
+              variant='outlined'
+              type='submit'
+              color='secondary'
+              onClick={handleLogout}
+            >
+              LOGOUT
+            </Button>
+          ) : (
+            <ExitToAppIcon
+              type='submit'
+              className={classes.logoutIcon}
+              onClick={handleLogout}
+            />
+          )}
         </Grid>
       </Grid>
     </nav>
