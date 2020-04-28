@@ -7,7 +7,6 @@ import { CssBaseline } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import PrivateRoute from './components/PrivateRoute';
-import Nav from './components/Nav';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Voting from './pages/Voting';
@@ -42,7 +41,6 @@ export const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router history={browserHistory}>
-        {/* <Nav /> */}
         <Switch>
           <PrivateRoute exact path='/dashboard' component={Dashboard} />
           <PrivateRoute exact path='/vote' component={Voting} />

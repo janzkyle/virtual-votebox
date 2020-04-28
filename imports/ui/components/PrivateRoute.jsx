@@ -3,17 +3,22 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Route, Redirect } from 'react-router';
 
+import Nav from './Nav';
+
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
-        Meteor.userId() ? (
-        <Component {...props} />
+    render={(props) =>
+      Meteor.userId() ? (
+        <>
+          <Nav />
+          <Component {...props} />
+        </>
       ) : (
         <Redirect
           to={{
-            pathname: "/login",
-            state: { from: props.location }
+            pathname: '/login',
+            state: { from: props.location },
           }}
         />
       )
@@ -21,4 +26,4 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   />
 );
 
-export default PrivateRoute
+export default PrivateRoute;
