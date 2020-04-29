@@ -1,6 +1,32 @@
 import React, { useState, useRef, useEffect } from 'react';
 import CandidatesForm from './CandidatesForm';
-import { FormControl, FormLabel } from '@material-ui/core';
+import {
+  makeStyles,
+  FormControl,
+  FormLabel,
+  Paper,
+  Typography,
+} from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    margin: theme.spacing(3, 0),
+  },
+  position: {
+    margin: theme.spacing(0, -2),
+    padding: theme.spacing(2, 2),
+    backgroundColor: theme.palette.secondary.main,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  candidates: {
+    padding: theme.spacing(0, 2),
+  },
+  note: {
+    margin: theme.spacing(1, 0, 1),
+    color: theme.palette.primary.light,
+  },
+}));
 
 const PositionComponent = (props) => {
   const {
@@ -10,6 +36,8 @@ const PositionComponent = (props) => {
     withAbstain,
     handleVoteChange,
   } = props;
+
+  const classes = useStyles();
 
   const [voted, setVoted] = useState([]);
 
@@ -43,27 +71,32 @@ const PositionComponent = (props) => {
   }, [voted]);
 
   return (
-    <div>
-      {titles.length > 1 && (
-        <div>You can only vote a candidate once except Abstain</div>
-      )}
+    <Paper className={classes.paper}>
       {titles.map((title, i) => (
         <FormControl
           component='fieldset'
           fullWidth={true}
           required={true}
           key={i.toString()}
+          className={classes.candidates}
         >
-          <FormLabel component='legend'>{title}</FormLabel>
+          <FormLabel className={classes.position}>{title}</FormLabel>
+          {titles.length > 1 && (
+            <Typography variant='body2' className={classes.note}>
+              You can only vote the same candidate once as {title.slice(0, -2)}{' '}
+              except for Abstain
+            </Typography>
+          )}
           <CandidatesForm
             candidates={candidates}
             selected={voted[i] || ''}
             handleSelected={handleSelected}
             index={i}
+            className={classes.candidates}
           />
         </FormControl>
       ))}
-    </div>
+    </Paper>
   );
 };
 

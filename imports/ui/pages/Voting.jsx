@@ -2,7 +2,13 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 
-import { makeStyles, CircularProgress, Grid, Button } from '@material-ui/core';
+import {
+  makeStyles,
+  CircularProgress,
+  Grid,
+  Button,
+  Typography,
+} from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
 import { Voted } from '../../api/voted';
@@ -10,8 +16,10 @@ import { Votes } from '../../api/votes';
 import { Positions } from '../../api/positions';
 
 import PositionComponent from '../components/PositionComponent';
-import { groupCandidates, insertCandidatesToPositions } from '../../util/helper';
-
+import {
+  groupCandidates,
+  insertCandidatesToPositions,
+} from '../../util/helper';
 
 const useStyles = makeStyles((theme) => ({
   loader: {
@@ -19,7 +27,18 @@ const useStyles = makeStyles((theme) => ({
     top: '50%',
     left: '50%',
     WebkitTransform: 'translate(-50%, -50%)',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
+  },
+  root: {
+    padding: theme.spacing(4, 2),
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  alert: {
+    margin: theme.spacing(-4, -2, 0),
+  },
+  submit: {
+    justifyContent: 'center',
   },
 }));
 
@@ -44,10 +63,9 @@ const usePositions = () =>
     return { positions, positionsLoaded: subscription.ready() };
   }, []);
 
-
 const Voting = () => {
-  const classes = useStyles()
-  
+  const classes = useStyles();
+
   const [votes, setVotes] = useState({});
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -96,30 +114,47 @@ const Voting = () => {
   }, [error]);
 
   return candidatesLoaded && positionsLoaded ? (
-    <Grid container>
-      {error && <Alert severity='error'>{error}</Alert>}
+    <Grid container className={classes.root}>
+      {error && (
+        <Alert severity='error' className={classes.alert}>
+          {error}
+        </Alert>
+      )}
+      <Grid item sm={12}>
+        <Typography component='h2' variant='h4'>
+          Ballot
+        </Typography>
+      </Grid>
       <form onSubmit={handleVoteSubmit}>
-        {ballot.map((position) => (
-          <PositionComponent
-            handleVoteChange={handleVoteChange}
-            key={position._id}
-            {...position}
-          />
-        ))}
-        <Button
-          type='submit'
-          variant='contained'
-          color='primary'
-          fullWidth
-          disableElevation
-          disabled={hasVoted}
-        >
-          Submit Votes
-        </Button>
+        <Grid item sm={12}>
+          {ballot.map((position) => (
+            <PositionComponent
+              handleVoteChange={handleVoteChange}
+              key={position._id}
+              {...position}
+            />
+          ))}
+        </Grid>
+        <Grid container item className={classes.submit}>
+          <Grid item xs={12} md={4}>
+            <Button
+              type='submit'
+              variant='contained'
+              fullWidth
+              color='primary'
+              disableElevation
+              disabled={hasVoted}
+            >
+              Submit Votes
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </Grid>
   ) : (
-    <div className={classes.loader}><CircularProgress /></div>
+    <div className={classes.loader}>
+      <CircularProgress />
+    </div>
   );
 };
 
