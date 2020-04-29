@@ -75,7 +75,7 @@ const Login = () => {
   let history = useHistory();
   let location = useLocation();
 
-  let { from } = location.state || { from: { pathname: '/dashboard' } };
+  let { from } = location.state || { from: { pathname: '/vote' } };
 
   const handleSubmit = (e) => {
     e.preventDefault();
