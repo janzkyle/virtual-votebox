@@ -111,7 +111,7 @@ const Voting = () => {
       if (err) {
         setError(err.reason);
       } else {
-        setSuccess('Your vote has successfully been recorded!');
+        setSuccess('Your vote has successfully been recorded! Go to Dashboard to see the tally');
       }
     });
     setOpenConfirm(false);
