@@ -4,7 +4,6 @@ import { useTracker } from 'meteor/react-meteor-data';
 
 import {
   makeStyles,
-  CircularProgress,
   Grid,
   Button,
   Typography,
@@ -17,6 +16,7 @@ import { Positions } from '../../api/positions';
 
 import PositionComponent from '../components/PositionComponent';
 import Loader from '../components/Loader';
+import VoteModal from '../components/VoteModal';
 import {
   groupCandidates,
   insertCandidatesToPositions,
@@ -74,7 +74,6 @@ const Voting = () => {
   const hasVoted = useVoted();
   const { candidates, candidatesLoaded } = useCandidates();
   const { positions, positionsLoaded } = usePositions();
-
   const grouped = groupCandidates(candidates, 'position');
   const ballot = insertCandidatesToPositions(positions, grouped);
 
@@ -116,6 +115,7 @@ const Voting = () => {
 
   return candidatesLoaded && positionsLoaded ? (
     <Grid container className={classes.root}>
+      <VoteModal hasVoted />
       {error && (
         <Alert severity='error' className={classes.alert}>
           {error}

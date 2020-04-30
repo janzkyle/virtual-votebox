@@ -91,9 +91,9 @@ Meteor.startup(() => {
       if (!Accounts.findUserByEmail(email)) {
         console.log('Adding to accounts');
         Accounts.createUser({ email, password });
-        console.log(`Emailing`);
+        console.log(`Emailing ${email}`);
         Email.send({
-          from: `Virtual Votebox <${fromEmail}>`,
+          from: fromEmail,
           to: email,
           subject: 'AECES 2020 Online Elections',
           text: `You may login and vote at ${process.env.ROOT_URL} using your email and the auto-generated password below. \nEmail: ${email} \nPassword: ${password} \n\nPlease do not reply to this email.`,
