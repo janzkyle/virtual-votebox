@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4, 2),
     flexDirection: 'column',
+    backgroundColor: theme.palette.primary.light
   },
   alert: {
     margin: theme.spacing(-4, -2, 0),
@@ -118,7 +119,7 @@ const Voting = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [error]);
+  }, [error, success]);
 
   return candidatesLoaded && positionsLoaded ? (
     <Grid container className={classes.root}>

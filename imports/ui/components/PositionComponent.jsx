@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   note: {
     margin: theme.spacing(1, 0, 1),
-    color: theme.palette.primary.light,
+    color: '#858585',
   },
 }));
 
