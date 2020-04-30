@@ -24,7 +24,6 @@ Meteor.methods({
     if (Voted.findOne({ userId: Meteor.userId() })) {
       throw new Meteor.Error('already-voted', 'Already voted. You cannot vote more than once');
     } else {
-      console.log(votes);
       Voted.insert({
         votedAt: new Date(),
         userId: this.userId,

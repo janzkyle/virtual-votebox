@@ -13,7 +13,6 @@ const VoteModal = ({ hasVoted }) => {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log(hasVoted);
   const [modalTitle, modalMsg] = hasVoted
     ? [
         <Typography align='center' color='error'>
