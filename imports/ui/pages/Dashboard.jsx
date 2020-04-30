@@ -33,9 +33,6 @@ const Dashboard = () => {
   const grouped = groupCandidates(candidates, 'position');
   const positionTallies = insertCandidatesToPositions(positions, grouped);
 
-  if (candidatesLoaded && positionsLoaded) {
-    console.log(positionTallies);
-  }
   return candidatesLoaded && positionsLoaded ? (
     <>
       <h1>Dashboard</h1>
