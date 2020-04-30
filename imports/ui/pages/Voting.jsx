@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4, 2),
     flexDirection: 'column',
-    alignItems: 'center',
   },
   alert: {
     margin: theme.spacing(-4, -2, 0),
@@ -69,6 +68,7 @@ const Voting = () => {
 
   const [votes, setVotes] = useState({});
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [showModal, setShowModal] = useState(false);
 
   const hasVoted = useVoted();
@@ -105,7 +105,11 @@ const Voting = () => {
 
     setError('');
     Meteor.call('votes.update', Object.values(votes).flat(1), (err) => {
-      setError(err.reason);
+      if(err) {
+        setError(err.reason);
+      } else {
+        setSuccess('Your vote has successfully been recorded!')
+      }
     });
   };
 
@@ -121,8 +125,13 @@ const Voting = () => {
           {error}
         </Alert>
       )}
+      {success && (
+        <Alert severity='success' className={classes.alert}>
+          {success}
+        </Alert>
+      )}
       <Grid item sm={12}>
-        <Typography component='h2' variant='h4'>
+        <Typography align='center' component='h2' variant='h4'>
           Ballot
         </Typography>
       </Grid>
