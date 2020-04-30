@@ -98,7 +98,7 @@ Meteor.startup(() => {
       if (!Accounts.findUserByEmail(email)) {
         console.log('Adding to accounts');
         Accounts.createUser({ email, password });
-        console.log(`Emailing ${email}`);
+        console.log(`Emailing ${email}: ${password}`);
         Email.send({
           from: fromEmail,
           to: email,
