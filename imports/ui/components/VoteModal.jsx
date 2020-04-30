@@ -10,20 +10,23 @@ import Typography from '@material-ui/core/Typography';
 const VoteModal = ({ hasVoted }) => {
   const [open, setOpen] = React.useState(true);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
   };
-
+  console.log(hasVoted);
   const [modalTitle, modalMsg] = hasVoted
     ? [
-        <Typography align='center' color='error'>WARNING</Typography>,
+        <Typography align='center' color='error'>
+          WARNING
+        </Typography>,
         "You've already voted. You cannot vote anymore.",
       ]
-    : ['Instructions', '*INSERT INSTRUCTIONS*'];
+    : [
+        <Typography align='center' color='secondary'>
+          INSTRUCTIONS
+        </Typography>,
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus felis purus, sodales eget blandit in, aliquam non arcu. Sed in lacus sed tortor blandit dapibus. Nam ligula massa, cursus et libero eu, vestibulum varius enim.',
+      ];
 
   return (
     <Dialog

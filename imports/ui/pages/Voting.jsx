@@ -115,7 +115,7 @@ const Voting = () => {
 
   return candidatesLoaded && positionsLoaded ? (
     <Grid container className={classes.root}>
-      <VoteModal hasVoted />
+      <VoteModal hasVoted={hasVoted} />
       {error && (
         <Alert severity='error' className={classes.alert}>
           {error}
