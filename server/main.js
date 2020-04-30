@@ -9,18 +9,23 @@ import { Votes } from '/imports/api/votes';
 import { Positions } from '/imports/api/positions';
 
 const candidates = [
-  { position: 'President', name: 'Kyle Ordona1' },
-  { position: 'President', name: 'Kyle Ordona2' },
-  { position: 'External Vice President', name: 'Kyle Ordona3' },
-  { position: 'External Vice President', name: 'Kyle Ordona4' },
-  { position: 'Finance Officer', name: 'Kyle Ordona5' },
-  { position: 'Secretary-General', name: 'Kyle Ordona6' },
-  { position: 'Secretary-General', name: 'Kyle Ordona7' },
-  { position: 'Secretary-General', name: 'Kyle Ordona8' },
-  { position: 'VP for RnD', name: 'Kyle Ordona9' },
-  { position: 'VP for RnD', name: 'Kyle Ordona10' },
-  { position: 'VP for RnD', name: 'Kyle Ordona11' },
-  { position: 'VP for EA', name: 'Kyle Ordona12' },
+  { position: 'President', name: 'Sergio Marquina' },
+  { position: 'External Vice President', name: 'Andrés de Fonollosa' },
+  { position: 'External Vice President', name: 'Martín Berrote' },
+  { position: 'Finance Officer', name: 'Ágata Jiménez' },
+  { position: 'Secretary-General', name: 'Raquel Murillo' },
+  { position: 'Secretary-General', name: 'Silene Oliveira' },
+  { position: 'Secretary-General', name: 'Mónica Gaztambide' },
+  { position: 'VP for External Affairs', name: 'Alicia Sierra' },
+  { position: 'VP for External Affairs', name: 'Arturo Román' },
+  { position: 'VP for Human Resources', name: 'Ricardo Ramos' },
+  { position: 'VP for Training and Development', name: 'Aníbal Cortés' },
+  { position: 'VP for Training and Development', name: 'Mirko Dragic' },
+  { position: 'VP for Training and Development', name: 'Colonel Luis Tamayo' },
+  { position: 'VP for Special Projects', name: 'Marseille' },
+  { position: 'VP for Special Projects', name: 'Radko Dragić' },
+  { position: 'VP for Special Projects', name: 'Bogotá' },
+  { position: 'VP for Special Projects', name: 'César Gandía' },
 ];
 
 const positions = [
@@ -28,8 +33,10 @@ const positions = [
   { position: 'External Vice President', votesPerPerson: 1, withAbstain: true },
   { position: 'Finance Officer', votesPerPerson: 1, withAbstain: true },
   { position: 'Secretary-General', votesPerPerson: 1, withAbstain: true },
-  { position: 'VP for RnD', votesPerPerson: 2, withAbstain: true },
-  { position: 'VP for EA', votesPerPerson: 2, withAbstain: true },
+  { position: 'VP for Human Resources', votesPerPerson: 2, withAbstain: true },
+  { position: 'VP for Training and Development', votesPerPerson: 2, withAbstain: true },
+  { position: 'VP for Special Projects', votesPerPerson: 2, withAbstain: true },
+  { position: 'VP for External Affairs', votesPerPerson: 1, withAbstain: true },
 ];
 
 const addAbstain = (positions, candidates) => {
@@ -68,7 +75,7 @@ Meteor.startup(() => {
     });
   }
 
-  const csv = Assets.getText('AECESCB1920Test.csv');
+  const csv = Assets.getText('test.csv');
   const memberTable = Papa.parse(csv).data;
 
   let lastName, firstName, email, memberRow;
