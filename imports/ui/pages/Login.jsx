@@ -143,7 +143,6 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               fullWidth
-              autoFocus
               className={classes.textField}
               variant='outlined'
             />
