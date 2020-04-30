@@ -76,6 +76,8 @@ Meteor.startup(() => {
     length: 8,
   });
 
+  const fromEmail = process.env.MAIL_URL.substr(8, process.env.MAIL_URL.indexOf(':'))
+
   for (let i = 0; i < memberTable.length; i++) {
     memberRow = memberTable[i];
     lastName = memberRow[0];
@@ -91,10 +93,10 @@ Meteor.startup(() => {
         Accounts.createUser({ email, password });
         console.log(`Emailing`);
         Email.send({
-          from: 'aecescomelec2020@gmail.com',
+          from: `Virtual Votebox <${fromEmail}>`,
           to: email,
           subject: 'AECES 2020 Online Elections',
-          text: `You may login and vote at ${process.env.ROOT_URL} using this email and the auto-generated password below. \nEmail: ${email} \nPassword: ${password} \n\nPlease do not reply to this email.`,
+          text: `You may login and vote at ${process.env.ROOT_URL} using your email and the auto-generated password below. \nEmail: ${email} \nPassword: ${password} \n\nPlease do not reply to this email.`,
         });
       }
     } catch (err) {
