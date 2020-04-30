@@ -75,7 +75,7 @@ Meteor.startup(() => {
     });
   }
 
-  const csv = Assets.getText('test.csv');
+  const csv = Assets.getText('votersTest.csv');
   const memberTable = Papa.parse(csv).data;
 
   let lastName, firstName, email, memberRow;
@@ -103,7 +103,7 @@ Meteor.startup(() => {
           from: fromEmail,
           to: email,
           subject: 'AECES 2020 Online Elections',
-          text: `You may login and vote at ${process.env.ROOT_URL} using your email and the auto-generated password below. \nEmail: ${email} \nPassword: ${password} \n\nPlease do not reply to this email.`,
+          text: `Hello AECES Member!\n\nYou may login and vote for your next Executive Board at ${process.env.ROOT_URL} using your email and the auto-generated password below. \nEmail: ${email} \nPassword: ${password} \n\nPlease do not reply to this email.`,
         });
       }
     } catch (err) {
