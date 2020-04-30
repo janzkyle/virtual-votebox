@@ -96,8 +96,6 @@ Meteor.startup(() => {
 
     try {
       if (!Accounts.findUserByEmail(email)) {
-        console.log('Adding to accounts');
-        Accounts.createUser({ email, password });
         console.log(`Emailing ${email}: ${password}`);
         Email.send({
           from: fromEmail,
@@ -105,6 +103,8 @@ Meteor.startup(() => {
           subject: 'AECES 2020 Online Elections',
           text: `Hello AECES Member!\n\nYou may login and vote for your next Executive Board at ${process.env.ROOT_URL} using your email and the auto-generated password below. \nEmail: ${email} \nPassword: ${password} \n\nPlease do not reply to this email.`,
         });
+        console.log('Adding to accounts');
+        Accounts.createUser({ email, password });
       }
     } catch (err) {
       console.log(err);
