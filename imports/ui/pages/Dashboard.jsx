@@ -5,6 +5,12 @@ import { useTracker } from 'meteor/react-meteor-data';
 import { Votes } from '../../api/votes';
 import { Positions } from '../../api/positions';
 
+import Loader from '../components/Loader';
+import CandidatesTally from '../components/CandidatesTally';
+import {
+  groupCandidates,
+  insertCandidatesToPositions,
+} from '../../util/helper';
 
 const useTallies = () =>
   useTracker(() => {
@@ -20,16 +26,29 @@ const usePositions = () =>
     return { positions, positionsLoaded: subscription.ready() };
   }, []);
 
-
 const Dashboard = () => {
   const { candidates, candidatesLoaded } = useTallies();
   const { positions, positionsLoaded } = usePositions();
-  if (candidatesLoaded && positionsLoaded) {
-    console.log(candidates, positions)
-  }
-  return (
-    <h1>Dashboard</h1>
-  )
-}
 
-export default Dashboard
+  const grouped = groupCandidates(candidates, 'position');
+  const positionTallies = insertCandidatesToPositions(positions, grouped);
+
+  if (candidatesLoaded && positionsLoaded) {
+    console.log(positionTallies);
+  }
+  return candidatesLoaded && positionsLoaded ? (
+    <>
+      <h1>Dashboard</h1>
+      {positionTallies.map((tallies) => (
+        <div key={tallies._id}>
+          <h4>{tallies.position}</h4>
+          <CandidatesTally tallies={tallies.candidates}></CandidatesTally>
+        </div>
+      ))}
+    </>
+  ) : (
+    <Loader />
+  );
+};
+
+export default Dashboard;

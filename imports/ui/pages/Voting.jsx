@@ -16,6 +16,7 @@ import { Votes } from '../../api/votes';
 import { Positions } from '../../api/positions';
 
 import PositionComponent from '../components/PositionComponent';
+import Loader from '../components/Loader';
 import {
   groupCandidates,
   insertCandidatesToPositions,
@@ -152,9 +153,7 @@ const Voting = () => {
       </form>
     </Grid>
   ) : (
-    <div className={classes.loader}>
-      <CircularProgress />
-    </div>
+    <Loader />
   );
 };
 
