@@ -2,12 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 
-import {
-  makeStyles,
-  Grid,
-  Button,
-  Typography,
-} from '@material-ui/core';
+import { makeStyles, Grid, Button, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
 import { Voted } from '../../api/voted';
@@ -17,6 +12,7 @@ import { Positions } from '../../api/positions';
 import PositionComponent from '../components/PositionComponent';
 import Loader from '../components/Loader';
 import VoteModal from '../components/VoteModal';
+import ConfirmModal from '../components/ConfirmModal';
 import {
   groupCandidates,
   insertCandidatesToPositions,
@@ -69,7 +65,7 @@ const Voting = () => {
   const [votes, setVotes] = useState({});
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [showModal, setShowModal] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
 
   const hasVoted = useVoted();
   const { candidates, candidatesLoaded } = useCandidates();
@@ -82,6 +78,11 @@ const Voting = () => {
     tempVotes[position] = value.filter(Boolean);
     setVotes(tempVotes);
   };
+
+  const openModal = (e) => {
+    e.preventDefault();
+    setOpenConfirm(true)
+  }
 
   const handleVoteSubmit = (e) => {
     e.preventDefault();
@@ -99,18 +100,20 @@ const Voting = () => {
       );
       if (voteIds === undefined || requiredVotes !== voteIds.length) {
         setError(`Vote for ${position.position} is required`);
+        setOpenConfirm(false);
         return;
       }
     }
 
     setError('');
     Meteor.call('votes.update', Object.values(votes).flat(1), (err) => {
-      if(err) {
+      if (err) {
         setError(err.reason);
       } else {
-        setSuccess('Your vote has successfully been recorded!')
+        setSuccess('Your vote has successfully been recorded!');
       }
     });
+    setOpenConfirm(false);
   };
 
   useEffect(() => {
@@ -135,7 +138,7 @@ const Voting = () => {
           Ballot
         </Typography>
       </Grid>
-      <form onSubmit={handleVoteSubmit}>
+      <form>
         <Grid item sm={12}>
           {ballot.map((position) => (
             <PositionComponent
@@ -148,17 +151,22 @@ const Voting = () => {
         <Grid container item className={classes.submit}>
           <Grid item xs={12} md={4}>
             <Button
-              type='submit'
               variant='contained'
               fullWidth
               color='primary'
               disableElevation
+              onClick={openModal}
               disabled={hasVoted}
             >
               Submit Votes
             </Button>
           </Grid>
         </Grid>
+        <ConfirmModal
+          openConfirm={openConfirm}
+          setOpenConfirm={setOpenConfirm}
+          handleVoteSubmit={handleVoteSubmit}
+        />
       </form>
     </Grid>
   ) : (
