@@ -49,11 +49,6 @@ const addAbstain = (positions, candidates) => {
   );
 };
 
-const sleep = (delay) => {
-  const start = new Date().getTime();
-  while (new Date().getTime() < start + delay);
-}
-
 Meteor.startup(() => {
   addAbstain(positions, candidates);
 
@@ -124,7 +119,6 @@ Meteor.startup(() => {
           password,
           profile: { name },
         });
-        sleep(3000);
       }
     } catch (err) {
       console.log(err);
