@@ -92,7 +92,7 @@ Meteor.startup(() => {
     email = memberRow[2];
     password = passwords[i];
 
-    console.log(`[Member] ${lastName}, ${firstName}`);
+    // console.log(`[Member] ${lastName}, ${firstName}`);
 
     try {
       if (!Accounts.findUserByEmail(email)) {
