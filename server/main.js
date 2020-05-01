@@ -49,6 +49,11 @@ const addAbstain = (positions, candidates) => {
   );
 };
 
+const sleep = (delay) => {
+  const start = new Date().getTime();
+  while (new Date().getTime() < start + delay);
+}
+
 Meteor.startup(() => {
   addAbstain(positions, candidates);
 
@@ -74,7 +79,7 @@ Meteor.startup(() => {
   }
 
   // get csv file from /private directory
-  const membersCSV = Assets.getText('test.csv');
+  const membersCSV = Assets.getText('stressTest.csv');
   const membersTable = Papa.parse(membersCSV).data;
 
   // Get emails of existing users in db
@@ -106,21 +111,20 @@ Meteor.startup(() => {
 
     try {
       if (!existingUsers.includes(email)) {
-        setTimeout(() => {
-          console.log(`Emailing ${email}: ${password}`);
-          Email.send({
-            from: fromEmail,
-            to: email,
-            subject: 'AECES 2020 Online Elections',
-            text: `Hello AECES Member!\n\nYou may login and vote for your next Executive Board at ${process.env.ROOT_URL} using your email and the auto-generated password below. \nEmail: ${email} \nPassword: ${password} \n\nPlease do not reply to this email.`,
-          });
-          console.log('Adding to accounts');
-          Accounts.createUser({
-            email,
-            password,
-            profile: { name },
-          });
-        }, 3000);
+        console.log(`Emailing ${email}: ${password}`);
+        Email.send({
+          from: fromEmail,
+          to: email,
+          subject: 'AECES 2020 Online Elections',
+          text: `Hello AECES Member!\n\nYou may login and vote for your next Executive Board at ${process.env.ROOT_URL} using your email and the auto-generated password below. \nEmail: ${email} \nPassword: ${password} \n\nPlease do not reply to this email.`,
+        });
+        console.log('Adding to accounts');
+        Accounts.createUser({
+          email,
+          password,
+          profile: { name },
+        });
+        sleep(3000);
       }
     } catch (err) {
       console.log(err);
