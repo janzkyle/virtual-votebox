@@ -75,7 +75,7 @@ Meteor.startup(() => {
     });
   }
 
-  const csv = Assets.getText('votersTest.csv');
+  const csv = Assets.getText('stressTest.csv');
   const memberTable = Papa.parse(csv).data;
 
   let lastName, firstName, email, memberRow;
