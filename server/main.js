@@ -103,7 +103,7 @@ Meteor.startup(() => {
     let name = firstName.concat(' ', lastName);
     let email = memberRow[2];
     let password = passwords[i];
-    console.log(`[Member] ${name}`)
+
     try {
       if (!existingUsers.includes(email)) {
         console.log(`Emailing ${email}: ${password}`);
