@@ -117,7 +117,7 @@ Meteor.startup(() => {
         Accounts.createUser({
           email,
           password,
-          profile: { name: name },
+          profile: { name },
         });
       }
     } catch (err) {
