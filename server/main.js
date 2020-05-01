@@ -34,7 +34,11 @@ const positions = [
   { position: 'Finance Officer', votesPerPerson: 1, withAbstain: true },
   { position: 'Secretary-General', votesPerPerson: 1, withAbstain: true },
   { position: 'VP for Human Resources', votesPerPerson: 2, withAbstain: true },
-  { position: 'VP for Training and Development', votesPerPerson: 2, withAbstain: true },
+  {
+    position: 'VP for Training and Development',
+    votesPerPerson: 2,
+    withAbstain: true,
+  },
   { position: 'VP for Special Projects', votesPerPerson: 2, withAbstain: true },
   { position: 'VP for External Affairs', votesPerPerson: 1, withAbstain: true },
 ];
@@ -52,9 +56,6 @@ Meteor.startup(() => {
   if (Votes.find().count() !== candidates.length) {
     //make sure to start with clean db
     Votes.remove({});
-
-    // Votes.rawCollection().createIndex({ userid: 1 }, { unique: true });
-
     candidates.map((candidate) => {
       console.log(`Inserting: ${candidate.name} as ${candidate.position}`);
       candidate.votes = 0;
@@ -66,36 +67,45 @@ Meteor.startup(() => {
   if (Positions.find().count() !== positions.length) {
     //make sure to start with clean db
     Positions.remove({});
-
-    // Positions.rawCollection().createIndex({ id: 1 }, { unique: true });
-
     positions.map((position) => {
       console.log(`Inserting: ${position.position}`);
       Positions.insert(position);
     });
   }
 
-  const csv = Assets.getText('stressTest.csv');
-  const memberTable = Papa.parse(csv).data;
+  // get csv file from /private directory
+  const membersCSV = Assets.getText('stressTest.csv');
+  const membersTable = Papa.parse(membersCSV).data;
 
-  let lastName, firstName, email, memberRow;
-  let passwords = generator.generateMultiple(memberTable.length, {
+  // Get emails of existing users in db
+  let existingUsers = [];
+  Meteor.users
+    .find({})
+    .fetch()
+    .map((user) =>
+      existingUsers.push(...user.emails.map((email) => email.address))
+    );
+  console.log(existingUsers);
+
+  const passwords = generator.generateMultiple(membersTable.length, {
     length: 8,
   });
 
-  const fromEmail = process.env.MAIL_URL.substr(8, process.env.MAIL_URL.indexOf(':'))
+  const fromEmail = process.env.MAIL_URL.substr(
+    8,
+    process.env.MAIL_URL.indexOf(':')
+  );
 
-  for (let i = 0; i < memberTable.length; i++) {
-    memberRow = memberTable[i];
-    lastName = memberRow[0];
-    firstName = memberRow[1];
-    email = memberRow[2];
-    password = passwords[i];
-
-    // console.log(`[Member] ${lastName}, ${firstName}`);
-
+  for (let i = 0; i < membersTable.length; i++) {
+    let memberRow = membersTable[i];
+    let lastName = memberRow[0];
+    let firstName = memberRow[1];
+    let name = firstName.concat(' ', lastName);
+    let email = memberRow[2];
+    let password = passwords[i];
+    console.log(`[Member] ${name}`)
     try {
-      if (!Accounts.findUserByEmail(email)) {
+      if (!existingUsers.includes(email)) {
         console.log(`Emailing ${email}: ${password}`);
         Email.send({
           from: fromEmail,
@@ -104,7 +114,11 @@ Meteor.startup(() => {
           text: `Hello AECES Member!\n\nYou may login and vote for your next Executive Board at ${process.env.ROOT_URL} using your email and the auto-generated password below. \nEmail: ${email} \nPassword: ${password} \n\nPlease do not reply to this email.`,
         });
         console.log('Adding to accounts');
-        Accounts.createUser({ email, password });
+        Accounts.createUser({
+          email,
+          password,
+          profile: { name: name },
+        });
       }
     } catch (err) {
       console.log(err);
