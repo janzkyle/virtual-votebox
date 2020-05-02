@@ -29,10 +29,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4, 2),
     flexDirection: 'column',
-    backgroundColor: theme.palette.primary.light
+    backgroundColor: theme.palette.primary.light,
   },
   alert: {
     margin: theme.spacing(-4, -2, 0),
+  },
+  form: {
+    justifyContent: 'center',
   },
   submit: {
     justifyContent: 'center',
@@ -82,8 +85,8 @@ const Voting = () => {
 
   const openModal = (e) => {
     e.preventDefault();
-    setOpenConfirm(true)
-  }
+    setOpenConfirm(true);
+  };
 
   const handleVoteSubmit = (e) => {
     e.preventDefault();
@@ -111,7 +114,9 @@ const Voting = () => {
       if (err) {
         setError(err.reason);
       } else {
-        setSuccess('Your vote has successfully been recorded! Go to Dashboard to see the tally');
+        setSuccess(
+          'Your vote has successfully been recorded! Go to Dashboard to see the tally'
+        );
       }
     });
     setOpenConfirm(false);
@@ -140,27 +145,29 @@ const Voting = () => {
         </Typography>
       </Grid>
       <form>
-        <Grid item sm={12}>
-          {ballot.map((position) => (
-            <PositionComponent
-              handleVoteChange={handleVoteChange}
-              key={position._id}
-              {...position}
-            />
-          ))}
-        </Grid>
-        <Grid container item className={classes.submit}>
-          <Grid item xs={12} md={4}>
-            <Button
-              variant='contained'
-              fullWidth
-              color='primary'
-              disableElevation
-              onClick={openModal}
-              disabled={hasVoted}
-            >
-              Submit Votes
-            </Button>
+        <Grid item container className={classes.form}>
+          <Grid item sm={10}>
+            {ballot.map((position) => (
+              <PositionComponent
+                handleVoteChange={handleVoteChange}
+                key={position._id}
+                {...position}
+              />
+            ))}
+          </Grid>
+          <Grid container item className={classes.submit}>
+            <Grid item xs={12} sm={4}>
+              <Button
+                variant='contained'
+                fullWidth
+                color='primary'
+                disableElevation
+                onClick={openModal}
+                disabled={hasVoted}
+              >
+                Submit Votes
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
         <ConfirmModal

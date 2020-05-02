@@ -6,21 +6,27 @@ import {
   FormLabel,
   Paper,
   Typography,
+  Divider,
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    margin: theme.spacing(3, 0),
+    margin: theme.spacing(5, 0),
   },
   position: {
     margin: theme.spacing(0, -2),
-    padding: theme.spacing(2, 2),
+    padding: theme.spacing(1, 2),
     backgroundColor: theme.palette.secondary.main,
     color: 'white',
     fontWeight: 'bold',
   },
   candidates: {
     padding: theme.spacing(0, 2),
+  },
+  numberedTitle: {
+    margin: theme.spacing(1, 0, 1),
+    color: theme.palette.secondary.main,
+    fontWeight: 'bold',
   },
   note: {
     margin: theme.spacing(1, 0, 1),
@@ -80,12 +86,19 @@ const PositionComponent = (props) => {
           key={i.toString()}
           className={classes.candidates}
         >
-          <FormLabel className={classes.position}>{title}</FormLabel>
+          {i == 0 && (
+            <FormLabel className={classes.position}>{position}</FormLabel>
+          )}
           {titles.length > 1 && (
-            <Typography variant='body2' className={classes.note}>
-              You can only vote the same candidate once as {title.slice(0, -2)}{' '}
-              except for Abstain
-            </Typography>
+            <>
+              <Typography variant='body1' className={classes.numberedTitle}>
+                {title}
+              </Typography>
+              <Typography variant='body2' className={classes.note}>
+                You can only vote the same candidate once as{' '}
+                {title.slice(0, -2)} except for Abstain
+              </Typography>
+            </>
           )}
           <CandidatesForm
             candidates={candidates}
@@ -94,6 +107,7 @@ const PositionComponent = (props) => {
             index={i}
             className={classes.candidates}
           />
+          <Divider />
         </FormControl>
       ))}
     </Paper>
