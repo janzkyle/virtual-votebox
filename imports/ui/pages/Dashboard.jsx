@@ -23,9 +23,7 @@ import {
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4, 2),
-    // flexDirection: 'column',
     justifyContent: 'center',
-    // alignContent: 'center',
     backgroundColor: theme.palette.primary.light,
   },
   paper: {
@@ -36,9 +34,10 @@ const useStyles = makeStyles((theme) => ({
 
 const useVoteCount = () =>
   useTracker(() => {
-    Meteor.subscribe('totalVoted');
+    Meteor.subscribe('voted');
     const totalVotes = Voted.find().count();
-    return totalVotes;
+    const voted = Voted.find({ userId: Meteor.userId() }).fetch();
+    return { totalVotes, hasVoted: !!voted.length };
   }, []);
 
 const useTallies = () =>
@@ -57,7 +56,7 @@ const usePositions = () =>
 
 const Dashboard = () => {
   const classes = useStyles();
-  const totalVotes = useVoteCount();
+  const { totalVotes, hasVoted } = useVoteCount();
   const { candidates, candidatesLoaded } = useTallies();
   const { positions, positionsLoaded } = usePositions();
 
@@ -76,7 +75,7 @@ const Dashboard = () => {
           Total votes casted: {totalVotes}
         </Typography>
       </Grid>
-      {positionTallies.map((tallies) => (
+      {hasVoted && positionTallies.map((tallies) => (
         <Grid item sm={10} key={tallies._id}>
           <Paper className={classes.paper}>
             <Typography variant='h6'>{tallies.position}</Typography>

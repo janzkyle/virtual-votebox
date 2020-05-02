@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 const useVoted = () =>
   useTracker(() => {
     Meteor.subscribe('voted');
-    const voted = Voted.find().fetch();
+    const voted = Voted.find({ userId: Meteor.userId() }).fetch();
     return !!voted.length;
   }, []);
 
