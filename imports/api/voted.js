@@ -7,4 +7,8 @@ if (Meteor.isServer) {
   Meteor.publish('voted', () => {
     return Voted.find({ userId: Meteor.userId() });
   });
+
+  Meteor.publish('totalVoted', () => {
+    return Voted.find();
+  })
 }
