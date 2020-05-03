@@ -74,7 +74,7 @@ Meteor.startup(() => {
   }
 
   // get csv file from /private directory
-  const membersCSV = Assets.getText('test.csv');
+  const membersCSV = Assets.getText('stressTest.csv');
   const membersTable = Papa.parse(membersCSV).data;
 
   // Get emails of existing users in db
