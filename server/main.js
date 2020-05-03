@@ -85,7 +85,6 @@ Meteor.startup(() => {
     .map((user) =>
       existingUsers.push(...user.emails.map((email) => email.address))
     );
-  console.log(existingUsers);
 
   const passwords = generator.generateMultiple(membersTable.length, {
     length: 8,
