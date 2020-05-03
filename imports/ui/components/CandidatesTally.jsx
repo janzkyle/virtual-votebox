@@ -16,7 +16,7 @@ const CandidatesTally = ({ tallies }) => {
           </TableCell>
           <TableCell align='right'>{row.votes}</TableCell>
           <TableCell align='right'>
-            {Math.round((row.votes / totalVotes) * 10000) / 100}%
+            {((row.votes / totalVotes) * 100).toFixed(1)}%
           </TableCell>
         </TableRow>
       ))}

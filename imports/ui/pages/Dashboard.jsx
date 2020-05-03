@@ -27,8 +27,21 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.light,
   },
   paper: {
-    padding: theme.spacing(3,3),
-    margin: theme.spacing(2,0)
+    margin: theme.spacing(2, 0),
+  },
+  voteCount: {
+    fontWeight: 'bold',
+    margin: theme.spacing(4, 0, 0),
+  },
+  position: {
+    backgroundColor: theme.palette.secondary.main,
+    color: 'white',
+    fontWeight: 600,
+    padding: theme.spacing(1, 1),
+  },
+  tableHeader: {
+    color: theme.palette.secondary.main,
+    fontWeight: 'bold',
   },
 }));
 
@@ -70,34 +83,47 @@ const Dashboard = () => {
           Dashboard
         </Typography>
       </Grid>
-      <Grid item sm={10}>
-        <Typography component='h3' variant='h5'>
+      <Grid item sm={7}>
+        <Typography component='h3' variant='h5' className={classes.voteCount}>
           Total votes casted: {totalVotes}
         </Typography>
       </Grid>
-      {hasVoted && positionTallies.map((tallies) => (
-        <Grid item sm={10} key={tallies._id}>
-          <Paper className={classes.paper}>
-            <Typography variant='h6'>{tallies.position}</Typography>
-            <Table aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell align='right'>Votes</TableCell>
-                  <TableCell align='right'>Percentage</TableCell>
-                </TableRow>
-              </TableHead>
-              <CandidatesTally tallies={tallies.candidates}></CandidatesTally>
-            </Table>
-          </Paper>
+      {hasVoted ? (
+        positionTallies.map((tallies) => (
+          <Grid item sm={7} key={tallies._id}>
+            <Paper className={classes.paper}>
+              <Typography variant='h6' className={classes.position}>
+                {tallies.position}
+              </Typography>
+              <Table aria-label='simple table'>
+                <colgroup>
+                  <col style={{ width: '40%' }} />
+                  <col style={{ width: '30%' }} />
+                  <col style={{ width: '30%' }} />
+                </colgroup>
+                <TableHead>
+                  <TableRow>
+                    <TableCell className={classes.tableHeader}>
+                      Candidate
+                    </TableCell>
+                    <TableCell align='right' className={classes.tableHeader}>
+                      Votes
+                    </TableCell>
+                    <TableCell align='right' className={classes.tableHeader}>
+                      Percentage
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <CandidatesTally tallies={tallies.candidates}></CandidatesTally>
+              </Table>
+            </Paper>
+          </Grid>
+        ))
+      ) : (
+        <Grid item sm={7}>
+          <Typography>Summary of votes is not yet available</Typography>
         </Grid>
-      ))}
-      {/* {positionTallies.map((tallies) => (
-        <div key={tallies._id}>
-          <h4>{tallies.position}</h4>
-          <CandidatesTally tallies={tallies.candidates}></CandidatesTally>
-        </div>
-      ))} */}
+      )}
     </Grid>
   ) : (
     <Loader />
