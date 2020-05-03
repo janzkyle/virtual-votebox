@@ -123,7 +123,7 @@ const Voting = () => {
         setError(err.reason);
       } else {
         setSuccess(
-          'Your vote has successfully been recorded! Go to Dashboard to see the tally'
+          'Your vote has successfully been recorded! Results will be displayed in the Dashboard after the election period'
         );
       }
       setOpenBackdrop(false);
