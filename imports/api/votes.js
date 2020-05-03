@@ -17,8 +17,11 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   'votes.update'(votes) {
-    if (!this.userId) {
-      throw new Meteor.Error('not-authorized');
+    if (!this.userId || !Meteor.users.findOne({ _id: Meteor.userId() })) {
+      throw new Meteor.Error(
+        'not-authorized',
+        'You are not authorized to vote'
+      );
     }
 
     if (Voted.findOne({ userId: Meteor.userId() })) {

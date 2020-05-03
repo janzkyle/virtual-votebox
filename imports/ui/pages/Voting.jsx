@@ -103,10 +103,6 @@ const Voting = () => {
     e.preventDefault();
     setOpenConfirm(false);
     setOpenBackdrop(true);
-    if (hasVoted) {
-      setError('Already voted. You cannot vote more than once');
-      return;
-    }
 
     for (const position of positions) {
       const voteIds = votes[position.position];
@@ -126,11 +122,11 @@ const Voting = () => {
       if (err) {
         setError(err.reason);
       } else {
-        setOpenBackdrop(false);
         setSuccess(
           'Your vote has successfully been recorded! Go to Dashboard to see the tally'
         );
       }
+      setOpenBackdrop(false);
     });
   };
 
@@ -158,7 +154,7 @@ const Voting = () => {
       </Grid>
       <form>
         <Grid item container className={classes.form}>
-          <Grid item sm={10}>
+          <Grid item sm={7}>
             {ballot.map((position) => (
               <PositionComponent
                 handleVoteChange={handleVoteChange}
