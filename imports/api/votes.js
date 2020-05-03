@@ -5,6 +5,13 @@ import { Voted } from './voted';
 
 export const Votes = new Mongo.Collection('votes');
 
+// Deny all client-side updates on the Votes collection
+Votes.deny({
+  insert() { return true; },
+  update() { return true; },
+  remove() { return true; },
+});
+
 if (Meteor.isServer) {
   Meteor.publish('candidates', () => {
     return Votes.find({}, { fields: { name: 1, position: 1 } });
