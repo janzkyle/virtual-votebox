@@ -117,8 +117,17 @@ const Voting = () => {
       }
     }
 
+    const votesArr = Object.values(votes).flat(1);
+    const votesPerPosition = Object.keys(votes).reduce((acc, position) => {
+      acc[position] = votes[position].map(
+        (id) => candidates.find((c) => c._id === id).name
+      );
+
+      return acc;
+    }, {});
+
     setError('');
-    Meteor.call('votes.update', Object.values(votes).flat(1), (err) => {
+    Meteor.call('votes.update', { votesArr, votesPerPosition }, (err) => {
       if (err) {
         setError(err.reason);
       } else {
