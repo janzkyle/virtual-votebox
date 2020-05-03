@@ -2,7 +2,13 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 
-import { makeStyles, Grid, Button, Typography } from '@material-ui/core';
+import {
+  makeStyles,
+  Grid,
+  Button,
+  Typography,
+  Backdrop,
+} from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
 import { Voted } from '../../api/voted';
@@ -40,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     justifyContent: 'center',
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const useVoted = () =>
@@ -70,6 +80,7 @@ const Voting = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [openConfirm, setOpenConfirm] = useState(false);
+  const [openBackdrop, setOpenBackdrop] = useState(false);
 
   const hasVoted = useVoted();
   const { candidates, candidatesLoaded } = useCandidates();
@@ -90,7 +101,8 @@ const Voting = () => {
 
   const handleVoteSubmit = (e) => {
     e.preventDefault();
-
+    setOpenConfirm(false);
+    setOpenBackdrop(true);
     if (hasVoted) {
       setError('Already voted. You cannot vote more than once');
       return;
@@ -103,8 +115,8 @@ const Voting = () => {
         grouped[position.position].length - position.withAbstain
       );
       if (voteIds === undefined || requiredVotes !== voteIds.length) {
+        setOpenBackdrop(false);
         setError(`Vote for ${position.position} is required`);
-        setOpenConfirm(false);
         return;
       }
     }
@@ -114,12 +126,12 @@ const Voting = () => {
       if (err) {
         setError(err.reason);
       } else {
+        setOpenBackdrop(false);
         setSuccess(
           'Your vote has successfully been recorded! Go to Dashboard to see the tally'
         );
       }
     });
-    setOpenConfirm(false);
   };
 
   useEffect(() => {
@@ -175,6 +187,9 @@ const Voting = () => {
           setOpenConfirm={setOpenConfirm}
           handleVoteSubmit={handleVoteSubmit}
         />
+        <Backdrop className={classes.backdrop} open={openBackdrop}>
+          <Loader />
+        </Backdrop>
       </form>
     </Grid>
   ) : (
