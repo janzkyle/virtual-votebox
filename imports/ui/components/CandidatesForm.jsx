@@ -12,7 +12,7 @@ const CandidatesForm = (props) => {
     <RadioGroup value={selected} onChange={onChange}>
       <Grid container>
         {candidates.map((candidate) => (
-          <Grid item xs={12} sm={3} key={candidate._id}>
+          <Grid item xs={12} sm={6} key={candidate._id}>
             <FormControlLabel
               control={<Radio />}
               label={candidate.name}

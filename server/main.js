@@ -9,23 +9,12 @@ import { Votes } from '/imports/api/votes';
 import { Positions } from '/imports/api/positions';
 
 const candidates = [
-  { position: 'President', name: 'Sergio Marquina' },
-  { position: 'External Vice President', name: 'Andrés de Fonollosa' },
-  { position: 'External Vice President', name: 'Martín Berrote' },
-  { position: 'Finance Officer', name: 'Ágata Jiménez' },
-  { position: 'Secretary-General', name: 'Raquel Murillo' },
-  { position: 'Secretary-General', name: 'Silene Oliveira' },
-  { position: 'Secretary-General', name: 'Mónica Gaztambide' },
-  { position: 'VP for External Affairs', name: 'Alicia Sierra' },
-  { position: 'VP for External Affairs', name: 'Arturo Román' },
-  { position: 'VP for Human Resources', name: 'Ricardo Ramos' },
-  { position: 'VP for Training and Development', name: 'Aníbal Cortés' },
-  { position: 'VP for Training and Development', name: 'Mirko Dragic' },
-  { position: 'VP for Training and Development', name: 'Colonel Luis Tamayo' },
-  { position: 'VP for Special Projects', name: 'Marseille' },
-  { position: 'VP for Special Projects', name: 'Radko Dragić' },
-  { position: 'VP for Special Projects', name: 'Bogotá' },
-  { position: 'VP for Special Projects', name: 'César Gandía' },
+  { position: 'President', name: 'Salud, Mikaella' },
+  { position: 'External Vice President', name: 'Cruz, Gerson Gerard' },
+  { position: 'Finance Officer', name: 'Cuezon, Alfonso Rafael' },
+  { position: 'Secretary-General', name: 'Alvarez, Luis' },
+  { position: 'VP for Human Resources', name: 'Florece, Antonio Rafael' },
+  { position: 'VP for Training and Development', name: 'Manlapaz, Juan Glicerio' }
 ];
 
 const positions = [
@@ -39,8 +28,6 @@ const positions = [
     votesPerPerson: 2,
     withAbstain: true,
   },
-  { position: 'VP for Special Projects', votesPerPerson: 2, withAbstain: true },
-  { position: 'VP for External Affairs', votesPerPerson: 1, withAbstain: true },
 ];
 
 const addAbstain = (positions, candidates) => {
@@ -74,7 +61,7 @@ Meteor.startup(() => {
   }
 
   // get csv file from /private directory
-  const membersCSV = Assets.getText('stressTest.csv');
+  const membersCSV = Assets.getText('AECESMembers2020.csv');
   const membersTable = Papa.parse(membersCSV).data;
 
   // Get emails of existing users in db
@@ -110,7 +97,7 @@ Meteor.startup(() => {
           from: fromEmail,
           to: email,
           subject: 'AECES 2020 Online Elections',
-          text: `Hello AECES Member!\n\nYou may login and vote for your next Executive Board at ${process.env.ROOT_URL} using your email and the auto-generated password below. \nEmail: ${email} \nPassword: ${password} \n\nPlease do not reply to this email.`,
+          text: `Hello ${firstName}!\n\nYou may login and vote for your next Executive Board at ${process.env.ROOT_URL} using your email and the auto-generated password below. \nEmail: ${email} \nPassword: ${password} \n\nPlease do not reply to this email.`,
         });
         console.log('Adding to accounts');
         Accounts.createUser({

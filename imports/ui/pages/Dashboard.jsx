@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4, 2),
     justifyContent: 'center',
-    backgroundColor: theme.palette.primary.light,
   },
   paper: {
     margin: theme.spacing(2, 0),
