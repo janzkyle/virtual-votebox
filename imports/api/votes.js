@@ -37,18 +37,14 @@ Meteor.methods({
         'Already voted. You cannot vote more than once'
       );
     } else {
-      throw new Meteor.Error(
-        'cannot-vote',
-        'Voting period is now done. You cannot vote anymore'
-      );
-      // console.log(votes);
-      // Voted.insert({
-      //   votedAt: new Date(),
-      //   userId: this.userId,
-      // });
-      // votes.map((_id) => {
-      //   Votes.update({ _id }, { $inc: { votes: 1 } });
-      // });
+      console.log(votes);
+      Voted.insert({
+        votedAt: new Date(),
+        userId: this.userId,
+      });
+      votes.map((_id) => {
+        Votes.update({ _id }, { $inc: { votes: 1 } });
+      });
     }
   },
 });

@@ -18,7 +18,7 @@ const VoteModal = ({ hasVoted }) => {
         <Typography align='center' color='error'>
           WARNING
         </Typography>,
-        "Voting is now closed. You cannot vote anymore.",
+        "You've already voted. You cannot vote anymore.",
       ]
     : [
         <Typography align='center' color='secondary'>
