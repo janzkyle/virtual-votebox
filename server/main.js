@@ -61,7 +61,7 @@ Meteor.startup(() => {
   }
 
   // get csv file from /private directory
-  const membersCSV = Assets.getText('AECESMembers2020.csv');
+  const membersCSV = Assets.getText('test.csv');
   const membersTable = Papa.parse(membersCSV).data;
 
   // Get emails of existing users in db
