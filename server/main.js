@@ -14,7 +14,10 @@ const candidates = [
   { position: 'Finance Officer', name: 'Cuezon, Alfonso Rafael' },
   { position: 'Secretary-General', name: 'Alvarez, Luis' },
   { position: 'VP for Human Resources', name: 'Florece, Antonio Rafael' },
-  { position: 'VP for Training and Development', name: 'Manlapaz, Juan Glicerio' }
+  {
+    position: 'VP for Training and Development',
+    name: 'Manlapaz, Juan Glicerio',
+  },
 ];
 
 const positions = [
@@ -77,10 +80,11 @@ Meteor.startup(() => {
     length: 8,
   });
 
-  const fromEmail = process.env.MAIL_URL.substr(
+  const from = process.env.MAIL_URL.substr(
     8,
     process.env.MAIL_URL.indexOf(':')
   );
+  const subject = 'Online Elections';
 
   for (let i = 0; i < membersTable.length; i++) {
     let memberRow = membersTable[i];
@@ -89,22 +93,26 @@ Meteor.startup(() => {
     let name = firstName.concat(' ', lastName);
     let email = memberRow[2];
     let password = passwords[i];
+    let text = `
+Hello ${firstName}!
+
+You may login and vote at ${process.env.ROOT_URL} using your email and the auto-generated password below.
+Email: ${email}
+Password: ${password}
+
+Please do not reply to this email.
+`;
 
     try {
       if (!existingUsers.includes(email)) {
-        console.log(`Emailing ${email}: ${password}`);
-        Email.send({
-          from: fromEmail,
-          to: email,
-          subject: 'AECES 2020 Online Elections',
-          text: `Hello ${firstName}!\n\nYou may login and vote for your next Executive Board at ${process.env.ROOT_URL} using your email and the auto-generated password below. \nEmail: ${email} \nPassword: ${password} \n\nPlease do not reply to this email.`,
-        });
-        console.log('Adding to accounts');
+        console.log(`Emailing ${email}`);
+        Email.send({ from, to: email, subject, text });
         Accounts.createUser({
           email,
           password,
           profile: { name },
         });
+        console.log(`${name}, ${email} added to db`);
       }
     } catch (err) {
       console.log(err);
