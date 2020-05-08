@@ -136,7 +136,7 @@ const Voting = () => {
 
   return candidatesLoaded && positionsLoaded ? (
     <Grid container className={classes.root}>
-      <VoteModal hasVoted={hasVoted} />
+      <VoteModal hasVoted={true} />
       {error && (
         <Alert severity='error' className={classes.alert}>
           {error}
@@ -171,7 +171,7 @@ const Voting = () => {
                 color='primary'
                 disableElevation
                 onClick={openModal}
-                disabled={hasVoted}
+                disabled
               >
                 Submit Votes
               </Button>

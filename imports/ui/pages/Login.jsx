@@ -68,14 +68,14 @@ const Login = () => {
 
   useEffect(() => {
     if (Meteor.userId()) {
-      history.replace('/vote');
+      history.replace('/dashboard');
     }
   }, []);
 
   let history = useHistory();
   let location = useLocation();
 
-  let { from } = location.state || { from: { pathname: '/vote' } };
+  let { from } = location.state || { from: { pathname: '/dashboard' } };
 
   const handleSubmit = (e) => {
     e.preventDefault();
