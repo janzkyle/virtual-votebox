@@ -1,5 +1,5 @@
 {
-  "name": "aeces-comelec-2020",
+  "name": "virtual-votebox",
   "private": true,
   "scripts": {
     "start": "meteor run",

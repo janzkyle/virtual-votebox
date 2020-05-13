@@ -25,19 +25,14 @@ const VoteModal = ({ hasVoted }) => {
           TERMS & CONDITIONS
         </Typography>,
         <>
-          As an official AECES member this S.Y. 2019-2020, you are eligible to
-          vote for the candidates running to be the next Executive Board. It is
-          your responsibility as a voter to (1) be knowledgeable of the plans
-          and platforms of the candidates before voting and (2) to only vote
-          according to your own decision and not anyone else's.
+          {/* Change the text below for terms and conditions */}
+          You are eligible to vote for the candidates listed in this ballot. It
+          is your responsibility as a voter to only vote according to your own
+          decision and not anyone else's.
           <br />
           <br />
-          The AECES COMELEC, on the other hand, is responsible for keeping any
-          details that involve the identity of the voter confidential in any
-          circumstances. Only details that would contribute to the overall
-          tallying of votes for the elections will be gathered in order to
-          determine the official list of elected Executive Board members for the
-          incoming school year.
+          You can change the text in this modal by editing
+          <i> /imports/ui/components/VoteModal.jsx</i>
         </>,
       ];
 

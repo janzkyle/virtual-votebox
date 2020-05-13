@@ -10,6 +10,7 @@ import {
   Box,
   Fab,
 } from '@material-ui/core';
+import HowToVoteIcon from '@material-ui/icons/HowToVote';
 import { useHistory, useLocation } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,8 +34,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.main,
   },
   img: {
-    maxHeight: 100,
-    margin: theme.spacing(5, 15, 0),
+    fill: theme.palette.secondary.main,
+    height: 100,
+    width: 100,
   },
   paper: {
     padding: theme.spacing(7, 2, 0),
@@ -101,7 +103,7 @@ const Login = () => {
   const logoAndTitle = (isMobile = false) => (
     <>
       <div>
-        <img src='/logo.png' className={classes.img} />
+        <HowToVoteIcon className={classes.img} />
       </div>
       <Typography component='h1' variant='h4'>
         <Box textAlign='center' m={1} color={isMobile ? '' : 'white'}>
@@ -116,7 +118,7 @@ const Login = () => {
       <Hidden xsDown>
         <Grid item sm={7} className={classes.titleContainer}>
           {logoAndTitle()}
-          <Typography className={classes.description}>
+          <Typography component='h2' variant='h6' className={classes.description}>
             Secure Online Voting for Organizations
           </Typography>
         </Grid>
