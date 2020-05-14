@@ -3,10 +3,10 @@ import { Mongo } from 'meteor/mongo';
 
 import { Voted } from './voted';
 
-export const Votes = new Mongo.Collection('votes');
+export const Candidates = new Mongo.Collection('candidates');
 
-// Deny all client-side updates on the Votes collection
-Votes.deny({
+// Deny all client-side updates on the Candidates collection
+Candidates.deny({
   insert() { return true; },
   update() { return true; },
   remove() { return true; },
@@ -14,11 +14,11 @@ Votes.deny({
 
 if (Meteor.isServer) {
   Meteor.publish('candidates', () => {
-    return Votes.find({}, { fields: { name: 1, position: 1 } });
+    return Candidates.find({}, { fields: { name: 1, position: 1 } });
   });
 
   Meteor.publish('tallies', () => {
-    return Votes.find({}, { fields: { updatedAt: 0 } });
+    return Candidates.find({}, { fields: { updatedAt: 0 } });
   });
 }
 
@@ -43,7 +43,7 @@ Meteor.methods({
         userId: this.userId,
       });
       votes.map((_id) => {
-        Votes.update({ _id }, { $inc: { votes: 1 } });
+        Candidates.update({ _id }, { $inc: { votes: 1 } });
       });
     }
   },

@@ -12,7 +12,7 @@ import {
 import { Alert } from '@material-ui/lab';
 
 import { Voted } from '../../api/voted';
-import { Votes } from '../../api/votes';
+import { Candidates } from '../../api/candidates';
 import { Positions } from '../../api/positions';
 
 import PositionComponent from '../components/PositionComponent';
@@ -62,7 +62,7 @@ const useVoted = () =>
 const useCandidates = () =>
   useTracker(() => {
     const subscription = Meteor.subscribe('candidates');
-    const candidates = Votes.find().fetch();
+    const candidates = Candidates.find().fetch();
     return { candidates, candidatesLoaded: subscription.ready() };
   }, []);
 

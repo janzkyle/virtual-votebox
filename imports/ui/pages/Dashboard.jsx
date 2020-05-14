@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 import { Voted } from '../../api/voted';
-import { Votes } from '../../api/votes';
+import { Candidates } from '../../api/candidates';
 import { Positions } from '../../api/positions';
 
 import Loader from '../components/Loader';
@@ -56,7 +56,7 @@ const useVoteCount = () =>
 const useTallies = () =>
   useTracker(() => {
     const subscription = Meteor.subscribe('tallies');
-    const candidates = Votes.find().fetch();
+    const candidates = Candidates.find().fetch();
     return { candidates, candidatesLoaded: subscription.ready() };
   }, []);
 

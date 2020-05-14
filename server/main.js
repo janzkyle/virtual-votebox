@@ -5,7 +5,7 @@ import { Papa } from 'meteor/harrison:papa-parse';
 
 import generator from 'generate-password';
 
-import { Votes } from '/imports/api/votes';
+import { Candidates } from '/imports/api/candidates';
 import { Positions } from '/imports/api/positions';
 
 const candidates = [
@@ -53,14 +53,14 @@ Meteor.startup(() => {
   addAbstain(positions, candidates);
 
   // insert candidates to votes collection
-  if (Votes.find().count() !== candidates.length) {
+  if (Candidates.find().count() !== candidates.length) {
     //make sure to start with clean db
-    Votes.remove({});
+    Candidates.remove({});
     candidates.map((candidate) => {
       console.log(`Inserting: ${candidate.name} as ${candidate.position}`);
       candidate.votes = 0;
       candidate.updatedAt = new Date();
-      Votes.insert(candidate);
+      Candidates.insert(candidate);
     });
   }
 
