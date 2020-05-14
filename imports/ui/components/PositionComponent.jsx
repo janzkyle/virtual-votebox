@@ -87,18 +87,18 @@ const PositionComponent = (props) => {
           className={classes.candidates}
         >
           {i == 0 && (
-            <FormLabel className={classes.position}>{position}</FormLabel>
-          )}
-          {titles.length > 1 && (
             <>
-              <Typography variant='body1' className={classes.numberedTitle}>
-                {title}
-              </Typography>
+              <FormLabel className={classes.position}>{position}</FormLabel>
               <Typography variant='body2' className={classes.note}>
                 You can only vote the same candidate once as{' '}
                 {title.slice(0, -2)} except for Abstain
               </Typography>
             </>
+          )}
+          {titles.length > 1 && (
+            <Typography variant='body1' className={classes.numberedTitle}>
+              {title}
+            </Typography>
           )}
           <CandidatesForm
             candidates={candidates}
