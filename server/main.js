@@ -8,50 +8,45 @@ import generator from 'generate-password';
 import { Candidates } from '/imports/api/candidates';
 import { Positions } from '/imports/api/positions';
 
-// get list of positions and candidates in /private/ballot.json
-const ballot = JSON.parse(Assets.getText('ballot.json'));
-
-const candidates = ballot.reduce((acc, item) => {
-  acc.push(
-    ...item.candidates.map((candidate) => ({
-      position: item.position,
-      name: candidate,
-    }))
-  );
-  return acc;
-}, []);
-console.table(candidates);
-
-const positions = ballot.map(({ candidates, ...item }) => item);
-console.table(positions);
-
-const addAbstain = (positions, candidates) => {
-  positions.map((position) =>
-    candidates.push({ position: position.position, name: 'Abstain' })
-  );
-};
-
 Meteor.startup(() => {
-  addAbstain(positions, candidates);
+  // get list of positions and candidates in /private/ballot.json
+  const ballot = JSON.parse(Assets.getText('ballot.json'));
+  const candidates = ballot.reduce((acc, item) => {
+    acc.push(
+      ...item.candidates.map((candidate) => ({
+        position: item.position,
+        name: candidate,
+      }))
+    );
+    return acc;
+  }, []);
+  const positions = ballot.map(({ candidates, ...item }) => item);
 
-  // insert candidates to votes collection
+  // add abstain candidates
+  positions.forEach((position) => {
+    if (position.withAbstain) {
+      candidates.push({ position: position.position, name: 'Abstain' });
+    }
+  });
+  console.table(positions);
+  console.table(candidates);
+
+  // insert to Candidates collection
   if (Candidates.find().count() !== candidates.length) {
-    //make sure to start with clean db
     Candidates.remove({});
     candidates.map((candidate) => {
-      console.log(`Inserting: ${candidate.name} as ${candidate.position}`);
       candidate.votes = 0;
       candidate.updatedAt = new Date();
       Candidates.insert(candidate);
+      console.log(`Inserted: ${candidate.name} as ${candidate.position}`);
     });
   }
-
+  // insert to Positions collection
   if (Positions.find().count() !== positions.length) {
-    //make sure to start with clean db
     Positions.remove({});
     positions.map((position) => {
-      console.log(`Inserting: ${position.position}`);
       Positions.insert(position);
+      console.log(`Inserted: ${position.position}`);
     });
   }
 
