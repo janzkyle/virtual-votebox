@@ -51,7 +51,7 @@ Meteor.startup(() => {
   }
 
   // get csv file from /private directory
-  const membersCSV = Assets.getText('test.csv');
+  const membersCSV = Assets.getText('stressTest.csv');
   const membersTable = Papa.parse(membersCSV).data;
 
   // Get emails of existing users in db
@@ -73,14 +73,15 @@ Meteor.startup(() => {
   );
   const subject = 'Online Elections';
 
-  for (let i = 0; i < membersTable.length; i++) {
-    let memberRow = membersTable[i];
-    let lastName = memberRow[0];
-    let firstName = memberRow[1];
-    let name = firstName.concat(' ', lastName);
-    let email = memberRow[2];
-    let password = passwords[i];
-    let text = `
+  Meteor.defer(() => {
+    for (let i = 0; i < membersTable.length; i++) {
+      let memberRow = membersTable[i];
+      let lastName = memberRow[0];
+      let firstName = memberRow[1];
+      let name = firstName.concat(' ', lastName);
+      let email = memberRow[2];
+      let password = passwords[i];
+      let text = `
 Hello ${firstName}!
 
 You may login and vote at ${process.env.ROOT_URL} using your email and the auto-generated password below.
@@ -89,21 +90,23 @@ Password: ${password}
 
 Please do not reply to this email.
 `;
-
-    try {
-      if (!existingUsers.includes(email)) {
-        console.log(`Emailing ${email}`);
-        Email.send({ from, to: email, subject, text });
-        Accounts.createUser({
-          email,
-          password,
-          profile: { name },
-        });
-        console.log(`${name}, ${email} added to db`);
+      while (true) {
+        try {
+          if (!existingUsers.includes(email)) {
+            console.log(`Emailing ${email}`);
+            Email.send({ from, to: email, subject, text });
+            Accounts.createUser({
+              email,
+              password,
+              profile: { name },
+            });
+            console.log(`${name}, ${email} added to db`);
+          }
+          break;
+        } catch (err) {
+          console.log(err);
+        }
       }
-    } catch (err) {
-      console.log(err);
-      throw err;
     }
-  }
+  });
 });
