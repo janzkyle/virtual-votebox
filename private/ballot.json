@@ -1,0 +1,50 @@
+[
+  {
+    "position": "President",
+    "votesPerPerson": 1,
+    "withAbstain": true,
+    "candidates": ["Sergio Marquina"]
+  },
+  {
+    "position": "External Vice President",
+    "votesPerPerson": 1,
+    "withAbstain": true,
+    "candidates": ["Andrés de Fonollosa", "Martín Berrote"]
+  },
+  {
+    "position": "Finance Officer",
+    "votesPerPerson": 1,
+    "withAbstain": true,
+    "candidates": ["Ágata Jiménez"]
+  },
+  {
+    "position": "Secretary-General",
+    "votesPerPerson": 1,
+    "withAbstain": false,
+    "candidates": ["Raquel Murillo", "Silene Oliveira", "Mónica Gaztambide"]
+  },
+  {
+    "position": "VP for External Affairs",
+    "votesPerPerson": 1,
+    "withAbstain": true,
+    "candidates": ["Alicia Sierra", "Arturo Román"]
+  },
+  {
+    "position": "VP for Human Resources",
+    "votesPerPerson": 2,
+    "withAbstain": true,
+    "candidates": ["Ricardo Ramos"]
+  },
+  {
+    "position": "VP for Training and Development",
+    "votesPerPerson": 2,
+    "withAbstain": true,
+    "candidates": ["Aníbal Cortés", "Mirko Dragic", "Colonel Luis Tamayo"]
+  },
+  {
+    "position": "VP for Special Projects",
+    "votesPerPerson": 2,
+    "withAbstain": false,
+    "candidates": ["Marseille", "Radko Dragić", "Bogotá", "César Gandía"]
+  }
+]

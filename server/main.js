@@ -8,40 +8,22 @@ import generator from 'generate-password';
 import { Candidates } from '/imports/api/candidates';
 import { Positions } from '/imports/api/positions';
 
-const candidates = [
-  { position: 'President', name: 'Sergio Marquina' },
-  { position: 'External Vice President', name: 'Andrés de Fonollosa' },
-  { position: 'External Vice President', name: 'Martín Berrote' },
-  { position: 'Finance Officer', name: 'Ágata Jiménez' },
-  { position: 'Secretary-General', name: 'Raquel Murillo' },
-  { position: 'Secretary-General', name: 'Silene Oliveira' },
-  { position: 'Secretary-General', name: 'Mónica Gaztambide' },
-  { position: 'VP for External Affairs', name: 'Alicia Sierra' },
-  { position: 'VP for External Affairs', name: 'Arturo Román' },
-  { position: 'VP for Human Resources', name: 'Ricardo Ramos' },
-  { position: 'VP for Training and Development', name: 'Aníbal Cortés' },
-  { position: 'VP for Training and Development', name: 'Mirko Dragic' },
-  { position: 'VP for Training and Development', name: 'Colonel Luis Tamayo' },
-  { position: 'VP for Special Projects', name: 'Marseille' },
-  { position: 'VP for Special Projects', name: 'Radko Dragić' },
-  { position: 'VP for Special Projects', name: 'Bogotá' },
-  { position: 'VP for Special Projects', name: 'César Gandía' },
-];
+// get list of positions and candidates in /private/ballot.json
+const ballot = JSON.parse(Assets.getText('ballot.json'));
 
-const positions = [
-  { position: 'President', votesPerPerson: 1, withAbstain: true },
-  { position: 'External Vice President', votesPerPerson: 1, withAbstain: true },
-  { position: 'Finance Officer', votesPerPerson: 1, withAbstain: true },
-  { position: 'Secretary-General', votesPerPerson: 1, withAbstain: true },
-  { position: 'VP for Human Resources', votesPerPerson: 2, withAbstain: true },
-  {
-    position: 'VP for Training and Development',
-    votesPerPerson: 2,
-    withAbstain: true,
-  },
-  { position: 'VP for Special Projects', votesPerPerson: 2, withAbstain: true },
-  { position: 'VP for External Affairs', votesPerPerson: 1, withAbstain: true },
-];
+const candidates = ballot.reduce((acc, item) => {
+  acc.push(
+    ...item.candidates.map((candidate) => ({
+      position: item.position,
+      name: candidate,
+    }))
+  );
+  return acc;
+}, []);
+console.table(candidates);
+
+const positions = ballot.map(({ candidates, ...item }) => item);
+console.table(positions);
 
 const addAbstain = (positions, candidates) => {
   positions.map((position) =>
