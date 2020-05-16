@@ -73,8 +73,8 @@ Meteor.startup(() => {
   );
   const subject = 'Online Elections';
 
-  Meteor.defer(() => {
-    for (let i = 0; i < membersTable.length; i++) {
+  (function sendEmail(i) {
+    Meteor.setTimeout(() => {
       let memberRow = membersTable[i];
       let lastName = memberRow[0];
       let firstName = memberRow[1];
@@ -107,6 +107,9 @@ Please do not reply to this email.
           console.log(err);
         }
       }
-    }
-  });
+
+      i++;
+      if (i < membersTable.length) sendEmail(i);
+    }, 3000);
+  })(0);
 });
