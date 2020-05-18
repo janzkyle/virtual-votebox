@@ -34,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.main,
   },
   img: {
+    maxHeight: 100,
+    margin: theme.spacing(5, 15, 0),
+  },
+  svg: {
     fill: theme.palette.secondary.main,
     height: 100,
     width: 100,
@@ -67,6 +71,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const hasLogo = false;
 
   useEffect(() => {
     if (Meteor.userId()) {
@@ -102,9 +107,14 @@ const Login = () => {
 
   const logoAndTitle = (isMobile = false) => (
     <>
-      <div>
-        <HowToVoteIcon className={classes.img} />
-      </div>
+      {hasLogo ? (
+        <img
+          src='/logo.png'
+          className={classes.img}
+        />
+      ) : (
+        <HowToVoteIcon className={classes.svg} />
+      )}
       <Typography component='h1' variant='h4'>
         <Box textAlign='center' m={1} color={isMobile ? '' : 'white'}>
           Virtual Votebox
@@ -118,7 +128,11 @@ const Login = () => {
       <Hidden xsDown>
         <Grid item sm={7} className={classes.titleContainer}>
           {logoAndTitle()}
-          <Typography component='h2' variant='h6' className={classes.description}>
+          <Typography
+            component='h2'
+            variant='h6'
+            className={classes.description}
+          >
             Secure Online Voting for Organizations
           </Typography>
         </Grid>
