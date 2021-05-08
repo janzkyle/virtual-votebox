@@ -1,0 +1,7 @@
+Hello {firstName}!
+
+You may login and vote at {url} using your email and the auto-generated password below.
+Email: {email}
+Password: {password}
+
+Please do not reply to this email.

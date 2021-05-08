@@ -51,7 +51,7 @@ Meteor.startup(() => {
   }
 
   // get csv file from /private directory
-  const membersCSV = Assets.getText('stressTest.csv');
+  const membersCSV = Assets.getText('test.csv');
   const membersTable = Papa.parse(membersCSV).data;
 
   // Get emails of existing users in db
@@ -71,7 +71,7 @@ Meteor.startup(() => {
     8,
     process.env.MAIL_URL.indexOf(':')
   );
-  const subject = 'Online Elections';
+  const subject = Assets.getText('emailSubject.txt');
 
   (function sendEmail(i) {
     Meteor.setTimeout(() => {
@@ -81,15 +81,12 @@ Meteor.startup(() => {
       let name = firstName.concat(' ', lastName);
       let email = memberRow[2];
       let password = passwords[i];
-      let text = `
-Hello ${firstName}!
+      let text = Assets.getText('emailBody.txt')
+        .replace('{firstName}', firstName)
+        .replace('{url}', process.env.ROOT_URL)
+        .replace('{email}', email)
+        .replace('{password}', password);
 
-You may login and vote at ${process.env.ROOT_URL} using your email and the auto-generated password below.
-Email: ${email}
-Password: ${password}
-
-Please do not reply to this email.
-`;
       while (true) {
         try {
           if (!existingUsers.includes(email)) {

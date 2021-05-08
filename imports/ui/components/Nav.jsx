@@ -81,9 +81,9 @@ const Nav = () => {
           </Grid>
           <Grid item xs={4} md={8} className={classes.logout}>
             <Hidden xsDown>
-              <Link href='/dashboard' variant='h6' className={classes.link}>
+              {/* <Link href='/dashboard' variant='h6' className={classes.link}>
                 Dashboard
-              </Link>
+              </Link> */}
               <Link href='/vote' variant='h6' className={classes.link}>
                 Vote
               </Link>
